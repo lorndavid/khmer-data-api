@@ -1,0 +1,21 @@
+# ==============================================================
+# 🇰🇭 KhmerAPI - All-in-One Standalone Single Container Compose
+# Runs: Frontend (Port 80) + Backend (Port 4000) + Database (5432)
+# ==============================================================
+services:
+  khmerapi:
+    image: ${DOCKER_IMAGE:-khmerapi:latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: khmerapi-all-in-one
+    restart: unless-stopped
+    ports:
+      - "80:80"       # Web UI & API Reverse Proxy
+      - "4000:4000"   # Direct REST API
+      - "5432:5432"   # Embedded PostgreSQL
+    volumes:
+      - khmerapi-data:/var/lib/postgresql/data
+
+volumes:
+  khmerapi-data:

@@ -17,7 +17,7 @@ const envSchema = z.object({
   REDIS_URL: z.string().default('redis://localhost:6379'),
   REDIS_ENABLED: z
     .string()
-    .default('true')
+    .default('false')
     .transform((val) => val === 'true'),
   REDIS_TTL_SECONDS: z.coerce.number().default(3600),
 

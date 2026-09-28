@@ -1,25 +1,25 @@
 <template>
-  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 space-y-12">
+  <div class="mx-auto w-[90%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 py-12 space-y-12">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200/80 pb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200/80 pb-6 font-battambang">
       <div class="space-y-1">
         <div class="inline-flex items-center gap-2">
           <span class="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-mono font-semibold text-emerald-700 border border-emerald-200/60">
-            Open Source Telemetry
+            {{ langStore.currentLang === 'km' ? 'ប្រព័ន្ធតាមដានទិន្នន័យ Telemetry' : 'Open Source Telemetry' }}
           </span>
         </div>
         <h1 class="text-3xl font-extrabold tracking-tight text-zinc-900">
-          System State & Live Latency
+          {{ langStore.t.status.title }}
         </h1>
         <p class="text-xs text-zinc-500">
-          Real-time health checks, endpoint latency benchmarks, data metrics, and architectural design.
+          {{ langStore.t.status.subtitle }}
         </p>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 font-battambang">
         <div class="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 shadow-2xs">
           <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>All Systems Operational</span>
+          <span>{{ langStore.t.status.allOperational }}</span>
         </div>
         <button
           @click="runAllLatencyBenchmarks"
@@ -27,50 +27,50 @@
           class="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-zinc-800 disabled:opacity-50 transition-colors shadow-2xs cursor-pointer"
         >
           <RefreshCwIcon class="w-3.5 h-3.5" :class="isBenchmarking ? 'animate-spin' : ''" />
-          <span>{{ isBenchmarking ? 'Pinging APIs...' : 'Ping All Endpoints' }}</span>
+          <span>{{ isBenchmarking ? langStore.t.status.checking : langStore.t.status.recheckAll }}</span>
         </button>
       </div>
     </div>
 
     <!-- Live Dataset Metrics Bar -->
-    <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-5">
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-5 font-battambang">
       <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs space-y-1">
-        <div class="text-xs font-medium text-zinc-500">Provinces & Capital</div>
-        <div class="text-2xl font-extrabold font-mono text-zinc-900">25</div>
-        <div class="text-[11px] text-zinc-400">100% Verified (2025)</div>
+        <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statProvinces }}</div>
+        <div class="text-2xl font-extrabold font-mono text-zinc-900">{{ langStore.currentLang === 'km' ? '២៥' : '25' }}</div>
+        <div class="text-[11px] text-zinc-400">{{ langStore.currentLang === 'km' ? 'ផ្ទៀងផ្ទាត់ ១០០% (២០២៥)' : '100% Verified (2025)' }}</div>
       </div>
 
       <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs space-y-1">
-        <div class="text-xs font-medium text-zinc-500">Districts (Khan/Srok)</div>
-        <div class="text-2xl font-extrabold font-mono text-zinc-900">210</div>
-        <div class="text-[11px] text-zinc-400">Across 25 Provinces</div>
+        <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statDistricts }}</div>
+        <div class="text-2xl font-extrabold font-mono text-zinc-900">{{ langStore.currentLang === 'km' ? '២១០' : '210' }}</div>
+        <div class="text-[11px] text-zinc-400">{{ langStore.currentLang === 'km' ? 'នៅទូទាំង ២៥ ខេត្ត' : 'Across 25 Provinces' }}</div>
       </div>
 
       <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs space-y-1">
-        <div class="text-xs font-medium text-zinc-500">Communes (Sangkat)</div>
-        <div class="text-2xl font-extrabold font-mono text-zinc-900">1,661</div>
-        <div class="text-[11px] text-zinc-400">Subdivisions</div>
+        <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statCommunes }}</div>
+        <div class="text-2xl font-extrabold font-mono text-zinc-900">{{ langStore.currentLang === 'km' ? '១,៦៦១' : '1,661' }}</div>
+        <div class="text-[11px] text-zinc-400">{{ langStore.currentLang === 'km' ? 'ឃុំ និងសង្កាត់' : 'Subdivisions' }}</div>
       </div>
 
       <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs space-y-1">
-        <div class="text-xs font-medium text-zinc-500">Villages (Phum)</div>
-        <div class="text-2xl font-extrabold font-mono text-zinc-900">14,528</div>
-        <div class="text-[11px] text-zinc-400">Full Relational Tree</div>
+        <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statVillages }}</div>
+        <div class="text-2xl font-extrabold font-mono text-zinc-900">{{ langStore.currentLang === 'km' ? '១៤,៥២៨' : '14,528' }}</div>
+        <div class="text-[11px] text-zinc-400">{{ langStore.currentLang === 'km' ? 'ឋានានុក្រមពេញលេញ' : 'Full Relational Tree' }}</div>
       </div>
 
       <div class="col-span-2 sm:col-span-4 lg:col-span-1 rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 shadow-2xs space-y-1">
-        <div class="text-xs font-medium text-emerald-800">Average Gateway Latency</div>
+        <div class="text-xs font-medium text-emerald-800">{{ langStore.currentLang === 'km' ? 'ល្បឿនមធ្យម Gateway' : 'Average Gateway Latency' }}</div>
         <div class="text-2xl font-extrabold font-mono text-emerald-700">{{ avgLatency }}ms</div>
-        <div class="text-[11px] text-emerald-600 font-medium">Redis In-Memory Hit</div>
+        <div class="text-[11px] text-emerald-600 font-medium">{{ langStore.currentLang === 'km' ? 'Redis In-Memory Hit' : 'Redis In-Memory Hit' }}</div>
       </div>
     </div>
 
     <!-- Live API Endpoint Latency Grid -->
-    <div class="space-y-4">
+    <div class="space-y-4 font-battambang">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-sm font-bold text-zinc-900">Live Endpoint Latency Benchmarks</h2>
-          <p class="text-xs text-zinc-500">Direct round-trip response measurements to local/edge server</p>
+          <h2 class="text-sm font-bold text-zinc-900">{{ langStore.t.status.livePingsTitle }}</h2>
+          <p class="text-xs text-zinc-500">{{ langStore.t.status.livePingsDesc }}</p>
         </div>
         <span class="text-xs font-mono text-zinc-400">Target: /api/v1</span>
       </div>
@@ -120,11 +120,11 @@
     </div>
 
     <!-- Open Source Architecture & System Design Section -->
-    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-2xs space-y-6">
+    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-2xs space-y-6 font-battambang">
       <div class="space-y-1">
-        <h2 class="text-sm font-bold text-zinc-900">System Architecture & Design</h2>
+        <h2 class="text-sm font-bold text-zinc-900">{{ langStore.currentLang === 'km' ? 'ស្ថាបត្យកម្មប្រព័ន្ធ & រចនាសម្ព័ន្ធ API' : 'System Architecture & Design' }}</h2>
         <p class="text-xs text-zinc-500">
-          How KhmerAPI serves high-throughput public Cambodian data with minimal latency and high resilience.
+          {{ langStore.currentLang === 'km' ? 'របៀបដែល KhmerAPI ផ្តល់ទិន្នន័យសាធារណៈកម្ពុជាប្រកបដោយល្បឿនលឿន និងភាពជឿជាក់ខ្ពស់។' : 'How KhmerAPI serves high-throughput public Cambodian data with minimal latency and high resilience.' }}
         </p>
       </div>
 
@@ -135,9 +135,9 @@
             <span class="text-[10px] font-mono font-bold uppercase text-zinc-500">Layer 1</span>
             <GlobeIcon class="w-4 h-4 text-zinc-600" />
           </div>
-          <h3 class="text-xs font-bold text-zinc-900">Edge & Gateway</h3>
+          <h3 class="text-xs font-bold text-zinc-900">{{ langStore.currentLang === 'km' ? 'ច្រកទ្វារ Edge & Gateway' : 'Edge & Gateway' }}</h3>
           <p class="text-[11px] text-zinc-600 leading-relaxed">
-            Express / Node.js HTTP/2 gateway with zero-auth public routing, CORS headers, Helmet security, and OpenAPI 3.1 compliance.
+            {{ langStore.currentLang === 'km' ? 'ច្រកទ្វារ Express/Node.js ដំណើរការតាមស្តង់ដារ HTTP/2 មិនទាមទារ API Key មានសុវត្ថិភាពខ្ពស់ និងបើក CORS រួចជាស្រេច។' : 'Express / Node.js HTTP/2 gateway with zero-auth public routing, CORS headers, Helmet security, and OpenAPI 3.1 compliance.' }}
           </p>
         </div>
 
@@ -147,9 +147,9 @@
             <span class="text-[10px] font-mono font-bold uppercase text-zinc-500">Layer 2</span>
             <ZapIcon class="w-4 h-4 text-amber-600" />
           </div>
-          <h3 class="text-xs font-bold text-zinc-900">Redis In-Memory Cache</h3>
+          <h3 class="text-xs font-bold text-zinc-900">{{ langStore.currentLang === 'km' ? 'អង្គចងចាំ Redis Cache' : 'Redis In-Memory Cache' }}</h3>
           <p class="text-[11px] text-zinc-600 leading-relaxed">
-            Sub-millisecond key-value caching of high-frequency datasets (provinces, districts, search indices) and rate limiting.
+            {{ langStore.currentLang === 'km' ? 'រក្សាទុកទិន្នន័យញឹកញាប់ក្នុង RAM (ខេត្ត ស្រុក ឃុំ ភូមិ និង Index ស្វែងរក) ផ្តល់ល្បឿនឆ្លើយតប < 1ms។' : 'Sub-millisecond key-value caching of high-frequency datasets (provinces, districts, search indices) and rate limiting.' }}
           </p>
         </div>
 
@@ -159,9 +159,9 @@
             <span class="text-[10px] font-mono font-bold uppercase text-zinc-500">Layer 3</span>
             <DatabaseIcon class="w-4 h-4 text-blue-600" />
           </div>
-          <h3 class="text-xs font-bold text-zinc-900">PostgreSQL Primary DB</h3>
+          <h3 class="text-xs font-bold text-zinc-900">{{ langStore.currentLang === 'km' ? 'មូលដ្ឋានទិន្នន័យ PostgreSQL' : 'PostgreSQL Primary DB' }}</h3>
           <p class="text-[11px] text-zinc-600 leading-relaxed">
-            Relational 4-tier schema with B-Tree indexes, full-text bilingual search, and foreign-key referential integrity across 14,528 records.
+            {{ langStore.currentLang === 'km' ? 'រចនាសម្ព័ន្ធទិន្នន័យ ៤ ថ្នាក់ត្រឹមត្រូវ មាន B-Tree Index គាំទ្រការស្វែងរកអក្សរខ្មែរ-អង់គ្លេសលើ ១៤,៥២៨ ទីតាំង។' : 'Relational 4-tier schema with B-Tree indexes, full-text bilingual search, and foreign-key referential integrity across 14,528 records.' }}
           </p>
         </div>
 
@@ -171,18 +171,18 @@
             <span class="text-[10px] font-mono font-bold uppercase text-zinc-500">Layer 4</span>
             <MapIcon class="w-4 h-4 text-emerald-600" />
           </div>
-          <h3 class="text-xs font-bold text-zinc-900">GeoJSON Spatial Engine</h3>
+          <h3 class="text-xs font-bold text-zinc-900">{{ langStore.currentLang === 'km' ? 'ប្រព័ន្ធផែនទី GeoJSON' : 'GeoJSON Spatial Engine' }}</h3>
           <p class="text-[11px] text-zinc-600 leading-relaxed">
-            National province boundaries and MultiPolygon coordinates exported as standard GeoJSON for GIS mapping and Leaflet/Mapbox integration.
+            {{ langStore.currentLang === 'km' ? 'ស្រទាប់ព្រំប្រទល់ខេត្ត និងកូអរដោនេ MultiPolygon ស្តង់ដារ GeoJSON ងាយស្រួលប្រើជាមួយ Leaflet និង Google Maps។' : 'National province boundaries and MultiPolygon coordinates exported as standard GeoJSON for GIS mapping and Leaflet/Mapbox integration.' }}
           </p>
         </div>
       </div>
     </div>
 
     <!-- Infrastructure Components Breakdown -->
-    <div class="space-y-4">
+    <div class="space-y-4 font-battambang">
       <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-        Infrastructure Telemetry
+        {{ langStore.currentLang === 'km' ? 'ស្ថានភាពសមាសភាគប្រព័ន្ធ' : 'Infrastructure Telemetry' }}
       </h2>
 
       <div class="divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white shadow-2xs">
@@ -191,7 +191,7 @@
           <div class="flex items-center gap-3">
             <ServerIcon class="w-4 h-4 text-zinc-500" />
             <div>
-              <span class="font-bold text-zinc-900">API Gateway & Router</span>
+              <span class="font-bold text-zinc-900">{{ langStore.currentLang === 'km' ? 'ច្រកទ្វារ API Gateway & Router' : 'API Gateway & Router' }}</span>
               <span class="ml-2 font-mono text-[11px] text-zinc-400">Express / TypeScript</span>
             </div>
           </div>
@@ -199,7 +199,7 @@
             <span class="font-mono text-xs text-zinc-500">{{ statusStore.latencyMs }}ms</span>
             <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
               <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              <span>Operational</span>
+              <span>{{ langStore.currentLang === 'km' ? 'ដំណើរការប្រក្រតី' : 'Operational' }}</span>
             </span>
           </div>
         </div>
@@ -209,15 +209,15 @@
           <div class="flex items-center gap-3">
             <DatabaseIcon class="w-4 h-4 text-zinc-500" />
             <div>
-              <span class="font-bold text-zinc-900">PostgreSQL Relational Cluster</span>
-              <span class="ml-2 font-mono text-[11px] text-zinc-400">14,528 Records Indexed</span>
+              <span class="font-bold text-zinc-900">{{ langStore.t.status.postgresDb }}</span>
+              <span class="ml-2 font-mono text-[11px] text-zinc-400">{{ langStore.currentLang === 'km' ? '១៤,៥២៨ ទិន្នន័យ' : '14,528 Records Indexed' }}</span>
             </div>
           </div>
           <div class="flex items-center gap-4">
             <span class="font-mono text-xs text-zinc-500">&lt; 3ms</span>
             <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
               <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              <span>Operational</span>
+              <span>{{ langStore.currentLang === 'km' ? 'ដំណើរការប្រក្រតី' : 'Operational' }}</span>
             </span>
           </div>
         </div>
@@ -227,15 +227,15 @@
           <div class="flex items-center gap-3">
             <ZapIcon class="w-4 h-4 text-zinc-500" />
             <div>
-              <span class="font-bold text-zinc-900">Redis In-Memory Engine</span>
-              <span class="ml-2 font-mono text-[11px] text-zinc-400">Memory Caching</span>
+              <span class="font-bold text-zinc-900">{{ langStore.t.status.redisCache }}</span>
+              <span class="ml-2 font-mono text-[11px] text-zinc-400">{{ langStore.currentLang === 'km' ? 'In-Memory Cache' : 'Memory Caching' }}</span>
             </div>
           </div>
           <div class="flex items-center gap-4">
             <span class="font-mono text-xs text-zinc-500">&lt; 1ms</span>
             <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
               <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              <span>Operational</span>
+              <span>{{ langStore.currentLang === 'km' ? 'ដំណើរការប្រក្រតី' : 'Operational' }}</span>
             </span>
           </div>
         </div>
@@ -256,8 +256,10 @@ import {
 } from 'lucide-vue-next';
 import axios from 'axios';
 import { useStatusStore } from '../stores/status.store';
+import { useLangStore } from '../stores/lang.store';
 
 const statusStore = useStatusStore();
+const langStore = useLangStore();
 const isBenchmarking = ref(false);
 
 interface EndpointBenchmark {

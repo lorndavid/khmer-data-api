@@ -1,7 +1,10 @@
+name: khmerapi
+
 services:
-  postgres:
+  # 1. Database Container (PostgreSQL 16)
+  database:
     image: postgres:16-alpine
-    container_name: khmerapi-postgres
+    container_name: khmerapi-database
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -10,32 +13,20 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - khmerapi-db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d khmerapi"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7-alpine
-    container_name: khmerapi-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  api:
+  # 2. Backend REST API Gateway Container
+  backend:
+    image: khmerapi-backend:latest
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: khmerapi-gateway
+      dockerfile: Dockerfile.backend
+    container_name: khmerapi-backend
     restart: unless-stopped
     ports:
       - "4000:4000"
@@ -43,19 +34,28 @@ services:
       NODE_ENV: development
       PORT: 4000
       HOST: 0.0.0.0
-      DATABASE_URL: postgresql://postgres:postgrespassword@postgres:5432/khmerapi?schema=public
-      REDIS_URL: redis://redis:6379
-      REDIS_ENABLED: "true"
+      DATABASE_URL: postgresql://postgres:postgrespassword@database:5432/khmerapi?schema=public
+      REDIS_ENABLED: "false"
       JWT_SECRET: super_secret_jwt_key_khmerapi_platform_default
       JWT_REFRESH_SECRET: super_secret_refresh_jwt_key_khmerapi_platform_default
-      CORS_ORIGINS: "http://localhost:3000,http://localhost:4000,https://khmerapi.dev,https://admin.khmerapi.dev"
+      CORS_ORIGINS: "*"
       LOG_LEVEL: info
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
+      database:
         condition: service_healthy
 
+  # 3. Frontend Web App & Nginx Gateway Container
+  frontend:
+    image: khmerapi-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: khmerapi-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
 volumes:
-  postgres-data:
-  redis-data:
+  khmerapi-db-data:

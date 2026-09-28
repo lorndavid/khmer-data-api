@@ -4,6 +4,7 @@ import ApisView from '../views/ApisView.vue';
 import DocsView from '../views/DocsView.vue';
 import ExplorerView from '../views/ExplorerView.vue';
 import StatusView from '../views/StatusView.vue';
+import DemographicsView from '../views/DemographicsView.vue';
 import NotFoundView from '../views/NotFoundView.vue';
 
 const routes: RouteRecordRaw[] = [
@@ -18,6 +19,12 @@ const routes: RouteRecordRaw[] = [
     name: 'apis',
     component: ApisView,
     meta: { title: 'API Catalog — KhmerAPI' },
+  },
+  {
+    path: '/demographics',
+    name: 'demographics',
+    component: DemographicsView,
+    meta: { title: 'Population & Demographics — KhmerAPI' },
   },
   {
     path: '/docs/:slug?',

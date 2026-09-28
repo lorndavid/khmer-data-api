@@ -1,0 +1,49 @@
+# Build Stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+RUN apk add --no-cache openssl
+
+COPY package*.json tsconfig.json ./
+COPY prisma ./prisma/
+RUN npm ci
+
+COPY src ./src/
+COPY scripts ./scripts/
+RUN npx prisma generate
+RUN npm run build && \
+    npx tsc scripts/import-cambodia-2025.ts --outDir dist --target ES2022 --module NodeNext --moduleResolution NodeNext --esModuleInterop --skipLibCheck --rootDir .
+
+# Production Stage (Slimmed)
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+RUN apk add --no-cache openssl wget curl && \
+    rm -rf /var/cache/apk/* /tmp/*
+
+ENV NODE_ENV=production
+ENV PORT=4000
+ENV HOST=0.0.0.0
+
+COPY package*.json tsconfig.json ./
+COPY prisma ./prisma/
+RUN npm ci --omit=dev && \
+    npx prisma generate && \
+    npm cache clean --force && \
+    rm -rf /root/.npm /root/.cache /tmp/*
+
+COPY --from=builder /app/dist ./dist
+COPY *.csv ./
+COPY scripts/start-backend.sh ./scripts/start-backend.sh
+
+RUN chmod +x ./scripts/start-backend.sh && \
+    sed -i 's/\r$//' ./scripts/start-backend.sh
+
+EXPOSE 4000
+
+HEALTHCHECK --interval=20s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:4000/health || exit 1
+
+CMD ["./scripts/start-backend.sh"]

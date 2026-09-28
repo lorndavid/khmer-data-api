@@ -48,9 +48,11 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Kantumruy Pro', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Battambang', 'Kantumruy Pro', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-        khmer: ['"Kantumruy Pro"', '"Khmer OS Battambang"', 'Inter', 'sans-serif']
+        khmer: ['"Battambang"', '"Kantumruy Pro"', '"Khmer OS Battambang"', 'sans-serif'],
+        battambang: ['"Battambang"', '"Kantumruy Pro"', '"Khmer OS Battambang"', 'sans-serif'],
+        koulen: ['"Koulen"', 'sans-serif'],
       },
       spacing: {
         '18': '4.5rem',

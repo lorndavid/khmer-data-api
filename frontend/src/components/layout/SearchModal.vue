@@ -16,7 +16,7 @@
           v-model="searchInput"
           @input="handleInput"
           type="text"
-          placeholder="Search documentation, APIs, provinces, postal codes..."
+          :placeholder="langStore.currentLang === 'km' ? 'ស្វែងរកទីតាំង ខេត្ត ស្រុក ឃុំ ភូមិ លេខប្រៃសណីយ៍ និង API...' : 'Search documentation, APIs, provinces, postal codes...'"
           class="w-full bg-transparent text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none"
           autofocus
         />
@@ -36,7 +36,7 @@
         <!-- Live Location Search Results (if available) -->
         <div v-if="searchStore.locationResults.length > 0" class="space-y-1">
           <div class="px-2.5 py-1 text-[11px] font-semibold tracking-wider text-zinc-400 uppercase">
-            Cambodia Public Data
+            {{ langStore.currentLang === 'km' ? 'ទិន្នន័យភូមិសាស្ត្រកម្ពុជា' : 'Cambodia Public Data' }}
           </div>
           <div
             v-for="item in searchStore.locationResults"
@@ -60,7 +60,7 @@
         <!-- Documentation & Endpoint Results -->
         <div v-if="searchStore.docResults.length > 0" class="space-y-1">
           <div class="px-2.5 py-1 text-[11px] font-semibold tracking-wider text-zinc-400 uppercase">
-            {{ searchStore.query ? 'Matching Topics' : 'Quick Navigation' }}
+            {{ searchStore.query ? (langStore.currentLang === 'km' ? 'លទ្ធផលស្វែងរក' : 'Matching Topics') : (langStore.currentLang === 'km' ? 'ផ្លូវកាត់រហ័ស' : 'Quick Navigation') }}
           </div>
           <div
             v-for="doc in searchStore.docResults"
@@ -85,15 +85,15 @@
           v-if="!searchStore.isLoading && searchStore.docResults.length === 0 && searchStore.locationResults.length === 0"
           class="py-8 text-center text-xs text-zinc-500"
         >
-          No results found for "<span class="font-semibold text-zinc-800">{{ searchStore.query }}</span>".
+          {{ langStore.currentLang === 'km' ? 'រកមិនឃើញលទ្ធផលសម្រាប់ ' : 'No results found for ' }}"<span class="font-semibold text-zinc-800">{{ searchStore.query }}</span>".
         </div>
       </div>
 
       <!-- Footer Help Hints -->
       <div class="flex items-center justify-between border-t border-zinc-100 bg-zinc-50/70 px-4 py-2 text-[11px] text-zinc-400">
         <div class="flex items-center gap-3">
-          <span><kbd class="font-mono bg-white border border-zinc-200 px-1 py-0.5 rounded text-[10px]">↑</kbd> <kbd class="font-mono bg-white border border-zinc-200 px-1 py-0.5 rounded text-[10px]">↓</kbd> navigate</span>
-          <span><kbd class="font-mono bg-white border border-zinc-200 px-1 py-0.5 rounded text-[10px]">↵</kbd> select</span>
+          <span><kbd class="font-mono bg-white border border-zinc-200 px-1 py-0.5 rounded text-[10px]">↑</kbd> <kbd class="font-mono bg-white border border-zinc-200 px-1 py-0.5 rounded text-[10px]">↓</kbd> {{ langStore.currentLang === 'km' ? 'ជ្រើសរើស' : 'navigate' }}</span>
+          <span><kbd class="font-mono bg-white border border-zinc-200 px-1 py-0.5 rounded text-[10px]">↵</kbd> {{ langStore.currentLang === 'km' ? 'បើក' : 'select' }}</span>
         </div>
         <span class="font-mono text-[10px]">KhmerAPI Universal Search</span>
       </div>
@@ -112,10 +112,12 @@ import {
 } from 'lucide-vue-next';
 import MethodBadge from '../common/MethodBadge.vue';
 import { useSearchStore } from '../../stores/search.store';
+import { useLangStore } from '../../stores/lang.store';
 import type { SearchResultItem } from '../../types/location.types';
 
 const router = useRouter();
 const searchStore = useSearchStore();
+const langStore = useLangStore();
 const searchInput = ref('');
 const inputRef = ref<HTMLInputElement | null>(null);
 

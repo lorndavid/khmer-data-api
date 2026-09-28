@@ -1,13 +1,13 @@
 <template>
-  <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
+  <div class="mx-auto w-[90%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 py-8 space-y-6 font-battambang">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200/80 pb-5">
       <div class="space-y-1">
         <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900">
-          Cambodia Data & Map Explorer
+          {{ langStore.t.explorer.title }}
         </h1>
         <p class="text-xs sm:text-sm text-zinc-500 max-w-2xl leading-relaxed">
-          Explore all 25 provinces, 210 districts, 1,661 communes, and 14,528 villages with interactive GeoJSON maps and API testing.
+          {{ langStore.t.explorer.subtitle }}
         </p>
       </div>
 
@@ -19,7 +19,7 @@
           :class="activeMode === 'map' ? 'bg-white font-bold text-zinc-900 shadow-sm' : 'hover:text-zinc-900'"
         >
           <MapIcon class="w-3.5 h-3.5 text-zinc-800" />
-          <span>Interactive Map</span>
+          <span>{{ langStore.currentLang === 'km' ? 'ផែនទីអន្តរកម្ម GeoJSON' : 'Interactive Map' }}</span>
         </button>
         <button
           @click="activeMode = 'browser'"
@@ -27,7 +27,7 @@
           :class="activeMode === 'browser' ? 'bg-white font-bold text-zinc-900 shadow-sm' : 'hover:text-zinc-900'"
         >
           <LayersIcon class="w-3.5 h-3.5 text-zinc-800" />
-          <span>Data Hierarchy (14,528 Villages)</span>
+          <span>{{ langStore.currentLang === 'km' ? 'ឋានានុក្រម ៤ ថ្នាក់ (១៤,៥២៨ ភូមិ)' : 'Data Hierarchy (14,528 Villages)' }}</span>
         </button>
         <button
           @click="activeMode = 'sandbox'"
@@ -52,7 +52,9 @@
         <!-- 1. Provinces Column -->
         <div class="lg:col-span-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs space-y-3">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-zinc-800">1. Provinces ({{ provinces.length }})</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-zinc-800">
+              {{ langStore.t.explorer.step1 }} ({{ provinces.length }})
+            </span>
             <span class="text-[10px] font-mono text-zinc-400">Step 1</span>
           </div>
 
@@ -60,7 +62,7 @@
             <input
               v-model="provinceSearch"
               type="text"
-              placeholder="Search province (Khmer/English)..."
+              :placeholder="langStore.t.explorer.selectProvince"
               class="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs text-zinc-900 focus:border-zinc-900 focus:bg-white focus:outline-none"
             />
           </div>
@@ -86,7 +88,7 @@
         <div class="lg:col-span-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold uppercase tracking-wider text-zinc-800">
-              2. Districts in {{ selectedProvince?.name_en || 'Province' }} ({{ districts.length }})
+              {{ langStore.t.explorer.step2 }} ({{ districts.length }})
             </span>
             <span class="text-[10px] font-mono text-zinc-400">Step 2</span>
           </div>
@@ -95,7 +97,7 @@
             <input
               v-model="districtSearch"
               type="text"
-              placeholder="Filter districts..."
+              :placeholder="langStore.t.explorer.selectDistrict"
               class="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs text-zinc-900 focus:border-zinc-900 focus:bg-white focus:outline-none"
             />
           </div>
@@ -105,7 +107,7 @@
           </div>
 
           <div v-else-if="filteredDistricts.length === 0" class="p-8 text-center text-xs text-zinc-400">
-            No districts found
+            {{ langStore.t.explorer.noDistricts }}
           </div>
 
           <div v-else class="max-h-[420px] overflow-y-auto space-y-1 pr-1 divide-y divide-zinc-50">
@@ -129,7 +131,7 @@
         <div class="lg:col-span-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold uppercase tracking-wider text-zinc-800">
-              3. Communes in {{ selectedDistrict?.name_en || 'District' }} ({{ communes.length }})
+              {{ langStore.t.explorer.step3 }} ({{ communes.length }})
             </span>
             <span class="text-[10px] font-mono text-zinc-400">Step 3</span>
           </div>
@@ -138,7 +140,7 @@
             <input
               v-model="communeSearch"
               type="text"
-              placeholder="Filter communes..."
+              :placeholder="langStore.t.explorer.selectCommune"
               class="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs text-zinc-900 focus:border-zinc-900 focus:bg-white focus:outline-none"
             />
           </div>
@@ -148,7 +150,7 @@
           </div>
 
           <div v-else-if="filteredCommunes.length === 0" class="p-8 text-center text-xs text-zinc-400">
-            No communes found
+            {{ langStore.t.explorer.noCommunes }}
           </div>
 
           <div v-else class="max-h-[420px] overflow-y-auto space-y-1 pr-1 divide-y divide-zinc-50">
@@ -194,7 +196,7 @@
               class="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-mono text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 transition-colors cursor-pointer shadow-2xs"
             >
               <component :is="treeCopied ? CheckIcon : CopyIcon" class="w-3.5 h-3.5 text-zinc-500" />
-              <span>{{ treeCopied ? 'Copied!' : `/api/v1/locations/${selectedCommune.code}` }}</span>
+              <span>{{ treeCopied ? langStore.t.common.copied : `/api/v1/locations/${selectedCommune.code}` }}</span>
             </button>
           </div>
         </div>
@@ -203,7 +205,7 @@
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-700">
-              4. Villages in {{ selectedCommune.name_en }} ({{ villages.length }})
+              {{ langStore.t.explorer.step4 }} ({{ villages.length }})
             </h4>
             <span class="text-[11px] font-mono text-zinc-400">Level 4: Phum</span>
           </div>
@@ -213,7 +215,7 @@
           </div>
 
           <div v-else-if="villages.length === 0" class="py-6 text-center text-xs text-zinc-400">
-            No village records found for this commune.
+            {{ langStore.t.explorer.noVillages }}
           </div>
 
           <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -252,7 +254,9 @@ import {
 import axios from 'axios';
 import CambodiaMap from '../components/explorer/CambodiaMap.vue';
 import ApiExplorer from '../components/explorer/ApiExplorer.vue';
+import { useLangStore } from '../stores/lang.store';
 
+const langStore = useLangStore();
 const activeMode = ref<'map' | 'browser' | 'sandbox'>('browser');
 
 const provinces = ref<any[]>([]);
@@ -413,6 +417,3 @@ onMounted(() => {
   fetchProvinces();
 });
 </script>
-
-
-

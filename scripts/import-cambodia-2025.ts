@@ -2,8 +2,18 @@ import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
 import { PrismaClient } from '@prisma/client';
-import { slugify } from '../src/common/utils/slugify';
-import { redisClient } from '../src/config/redis';
+
+function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
 
 const prisma = new PrismaClient();
 
@@ -55,11 +65,22 @@ async function main() {
   const startTime = performance.now();
   console.log('🇰🇭 KhmerAPI — Starting Full Cambodia 2025 Geographical Import...');
 
-  const csvPath = path.resolve(__dirname, '../CambodiaGeographicalList2025.csv');
+  let csvPath = path.resolve(__dirname, '../CambodiaGeographicalList2025.csv');
   if (!fs.existsSync(csvPath)) {
-    console.error(`❌ CSV file not found at: ${csvPath}`);
+    csvPath = path.resolve(process.cwd(), 'CambodiaGeographicalList2025.csv');
+  }
+  if (!fs.existsSync(csvPath)) {
+    csvPath = path.resolve(__dirname, '../CambodiaVillagesList2025.csv');
+  }
+  if (!fs.existsSync(csvPath)) {
+    csvPath = path.resolve(process.cwd(), 'CambodiaVillagesList2025.csv');
+  }
+
+  if (!fs.existsSync(csvPath)) {
+    console.error(`❌ CSV file not found. Checked: ${csvPath}`);
     process.exit(1);
   }
+  console.log(`  📂 Using CSV: ${csvPath}`);
 
   // 1. Ensure Country exists
   const country = await prisma.country.upsert({
@@ -306,17 +327,7 @@ async function main() {
   }
   console.log(`\n  ✓ Processed ${villageRecords.length} villages into database`);
 
-  // 7. Flush Redis Cache
-  if (redisClient) {
-    try {
-      await redisClient.flushdb();
-      console.log('  ✓ Flushed Redis cache keys');
-    } catch (_err) {
-      // Ignore if redis flush failed
-    }
-  }
-
-  // 8. Register Data Source Provenance
+  // 7. Register Data Source Provenance
   const existingSource = await prisma.dataSource.findFirst({
     where: { name: 'Cambodia Geographical Database 2025' },
   });
@@ -367,5 +378,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-    if (redisClient) redisClient.disconnect();
   });
