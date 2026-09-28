@@ -1,11 +1,31 @@
+import fs from 'fs';
+import path from 'path';
 import { prisma } from '../../config/database.js';
 import { redisCache } from '../../config/redis.js';
 
 export class GeoService {
-  async getGeoProvinces() {
-    const cacheKey = 'geo:provinces';
+  async getGeoProvinces(format: 'points' | 'boundaries' = 'boundaries') {
+    const cacheKey = `geo:provinces:${format}`;
     const cached = await redisCache.get(cacheKey);
     if (cached) return cached;
+
+    // If boundaries format requested, load the real Polygon GeoJSON if available on disk
+    if (format === 'boundaries') {
+      const geojsonPath = path.resolve(process.cwd(), 'geojson', 'khm_admin1.geojson');
+      const fallbackPath = path.resolve(process.cwd(), 'CambodiaProvinceBoundaries.geojson');
+      const targetPath = fs.existsSync(geojsonPath) ? geojsonPath : fallbackPath;
+      
+      if (fs.existsSync(targetPath)) {
+        try {
+          const raw = fs.readFileSync(targetPath, 'utf-8');
+          const parsed = JSON.parse(raw);
+          await redisCache.set(cacheKey, parsed, 86400); // 24 hours cache
+          return parsed;
+        } catch (_err) {
+          // fallback to points
+        }
+      }
+    }
 
     const provinces = await prisma.province.findMany({
       where: {
@@ -264,6 +284,37 @@ export class GeoService {
     await redisCache.set(cacheKey, geoData, 3600);
     return geoData;
   }
+
+  async getGeoJsonLayer(layer: string) {
+    const validLayers: Record<string, string> = {
+      'admin0': 'khm_admin0.geojson',
+      'admin1': 'khm_admin1.geojson',
+      'admin2': 'khm_admin2.geojson',
+      'admin3': 'khm_admin3.geojson',
+      'lines': 'khm_adminlines.geojson',
+      'points': 'khm_adminpoints.geojson',
+    };
+
+    const fileName = validLayers[layer];
+    if (!fileName) return null;
+
+    const cacheKey = `geo:layer:${layer}`;
+    const cached = await redisCache.get(cacheKey);
+    if (cached) return cached;
+
+    const filePath = path.resolve(process.cwd(), 'geojson', fileName);
+    if (!fs.existsSync(filePath)) return null;
+
+    try {
+      const raw = fs.readFileSync(filePath, 'utf-8');
+      const parsed = JSON.parse(raw);
+      await redisCache.set(cacheKey, parsed, 86400); // 24 hours
+      return parsed;
+    } catch (_e) {
+      return null;
+    }
+  }
 }
 
 export const geoService = new GeoService();
+

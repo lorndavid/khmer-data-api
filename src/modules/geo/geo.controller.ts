@@ -56,3 +56,22 @@ export async function getGeoVillages(
     next(error);
   }
 }
+
+export async function getGeoLayer(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const layer = req.params.layer as string;
+    const data = await geoService.getGeoJsonLayer(layer);
+    if (!data) {
+      res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: `GeoJSON layer '${layer}' not found` } });
+      return;
+    }
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+

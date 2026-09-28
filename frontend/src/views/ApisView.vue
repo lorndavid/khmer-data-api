@@ -3,13 +3,14 @@
     <!-- Header -->
     <div class="space-y-3 max-w-3xl">
       <div class="inline-flex items-center gap-2">
-        <span class="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-mono text-zinc-600 border border-zinc-200">REST API v1</span>
+        <span class="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-mono text-zinc-600 border border-zinc-200">REST API v1</span>
+        <span class="text-xs font-mono text-emerald-600 font-semibold">100% Free & Open</span>
       </div>
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900">
         API Catalog
       </h1>
       <p class="text-sm sm:text-base text-zinc-600 leading-relaxed">
-        Browse and integrate Cambodia's official geographic, administrative, postal, and search APIs. All public endpoints support anonymous access (60 req/min) or developer keys (300 req/min).
+        Browse and integrate Cambodia's official geographic, administrative, postal, and search APIs. All public endpoints are 100% free with zero API key required.
       </p>
     </div>
 
@@ -98,38 +99,38 @@ const API_SERVICES: ApiServiceCard[] = [
     description: 'Retrieve all 25 official Cambodian provinces and the capital Phnom Penh with codes, types, and coordinates.',
     status: 'Operational',
     endpointCount: 3,
-    docPath: '/docs/provinces',
-    sampleEndpoints: ['/provinces', '/provinces/:code', '/provinces/:code/districts'],
+    docPath: '/docs#provinces',
+    sampleEndpoints: ['/provinces', '/provinces/12', '/provinces/12/districts'],
   },
   {
     id: 'districts',
     category: 'Hierarchy',
     title: 'Districts (Khan / Srok / Krong)',
-    description: 'Query 204 second-tier administrative divisions across all 25 provinces with pagination and search.',
+    description: 'Query all 210 second-tier administrative divisions across all 25 provinces with pagination and search.',
     status: 'Operational',
     endpointCount: 3,
-    docPath: '/docs/districts',
-    sampleEndpoints: ['/districts', '/districts/:code', '/districts/:code/communes'],
+    docPath: '/docs#districts',
+    sampleEndpoints: ['/districts', '/districts/1201', '/districts/1201/communes'],
   },
   {
     id: 'communes',
     category: 'Hierarchy',
     title: 'Communes (Sangkat / Khum)',
-    description: 'Access over 1,650 third-tier administrative subdivisions with native Khmer names and coordinates.',
+    description: 'Access all 1,661 third-tier administrative subdivisions with native Khmer names and coordinates.',
     status: 'Operational',
     endpointCount: 3,
-    docPath: '/docs/communes',
-    sampleEndpoints: ['/communes', '/communes/:code', '/communes/:code/villages'],
+    docPath: '/docs#communes',
+    sampleEndpoints: ['/communes', '/communes/120101', '/communes/120101/villages'],
   },
   {
     id: 'villages',
     category: 'Hierarchy',
     title: 'Villages (Phum)',
-    description: 'Explore over 14,000 fourth-tier villages across Cambodia with commune relationships.',
+    description: 'Explore all 14,528 fourth-tier villages across Cambodia with commune relationships.',
     status: 'Operational',
     endpointCount: 2,
-    docPath: '/docs/villages',
-    sampleEndpoints: ['/villages', '/villages/:code'],
+    docPath: '/docs#villages',
+    sampleEndpoints: ['/villages', '/villages/12010101'],
   },
   {
     id: 'postal-codes',
@@ -138,8 +139,8 @@ const API_SERVICES: ApiServiceCard[] = [
     description: 'Official 5-digit postal code lookups mapped to provinces, districts, and communes.',
     status: 'Operational',
     endpointCount: 2,
-    docPath: '/docs/postal-codes',
-    sampleEndpoints: ['/postal-codes', '/postal-codes/:code'],
+    docPath: '/docs#postal-codes',
+    sampleEndpoints: ['/postal-codes/12000'],
   },
   {
     id: 'locations',
@@ -148,8 +149,8 @@ const API_SERVICES: ApiServiceCard[] = [
     description: 'Resolve any administrative code into its full 4-tier tree (Province, District, Commune, Village, Postal Codes).',
     status: 'Operational',
     endpointCount: 1,
-    docPath: '/docs/locations',
-    sampleEndpoints: ['/locations/:code'],
+    docPath: '/docs#locations',
+    sampleEndpoints: ['/locations/12010101'],
   },
   {
     id: 'search',
@@ -158,17 +159,17 @@ const API_SERVICES: ApiServiceCard[] = [
     description: 'Fast full-text search across Khmer, English, postal codes, and slugs with relevance ranking.',
     status: 'Operational',
     endpointCount: 1,
-    docPath: '/docs/search',
+    docPath: '/docs#search',
     sampleEndpoints: ['/search?q=Phnom%20Penh'],
   },
   {
     id: 'geo',
     category: 'Spatial',
     title: 'GeoJSON Coordinates & Geometry',
-    description: 'Export geographic coordinates as standard GeoJSON FeatureCollections for mapping libraries (Mapbox, Leaflet).',
+    description: 'Export geographic coordinates and province boundary polygons as standard GeoJSON FeatureCollections for Leaflet & Mapbox.',
     status: 'Operational',
-    endpointCount: 4,
-    docPath: '/docs/geo',
+    endpointCount: 2,
+    docPath: '/docs#geo',
     sampleEndpoints: ['/geo/provinces', '/geo/districts'],
   },
   {
@@ -178,8 +179,9 @@ const API_SERVICES: ApiServiceCard[] = [
     description: 'Live counts, verified government open-data source citations, license info, and verification dates.',
     status: 'Operational',
     endpointCount: 2,
-    docPath: '/docs/statistics',
+    docPath: '/docs#statistics',
     sampleEndpoints: ['/statistics', '/data-sources'],
   },
 ];
 </script>
+
