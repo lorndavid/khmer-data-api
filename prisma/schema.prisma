@@ -1,0 +1,311 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Country {
+  id         String     @id @default(uuid())
+  code       String     @unique @db.VarChar(10) // "KH"
+  name_km    String     @db.VarChar(100) // "កម្ពុជា"
+  name_en    String     @db.VarChar(100) // "Cambodia"
+  iso3       String     @unique @db.VarChar(3) // "KHM"
+  num_code   String?    @db.VarChar(10) // "116"
+  phone_code String?    @db.VarChar(10) // "+855"
+  is_active  Boolean    @default(true)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  provinces  Province[]
+
+  @@map("countries")
+}
+
+model Province {
+  id           String        @id @default(uuid())
+  code         String        @unique @db.VarChar(10) // e.g. "12"
+  country_id   String?
+  country      Country?      @relation(fields: [country_id], references: [id], onDelete: SetNull)
+  name_km      String        @db.VarChar(150)
+  name_en      String        @db.VarChar(150)
+  slug         String        @unique @db.VarChar(150)
+  type         String        @default("Province") @db.VarChar(50) // "Province" or "Municipality"
+  latitude     Float?
+  longitude    Float?
+  is_active    Boolean       @default(true)
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  districts    District[]
+  postal_codes PostalCode[]
+
+  @@index([name_km])
+  @@index([name_en])
+  @@index([slug])
+  @@index([is_active])
+  @@map("provinces")
+}
+
+model District {
+  id           String        @id @default(uuid())
+  code         String        @unique @db.VarChar(10) // e.g. "1202"
+  province_id  String
+  province     Province      @relation(fields: [province_id], references: [id], onDelete: Cascade)
+  name_km      String        @db.VarChar(150)
+  name_en      String        @db.VarChar(150)
+  slug         String        @db.VarChar(150)
+  type         String        @default("District") @db.VarChar(50) // "Khan", "Krong", "Srok"
+  latitude     Float?
+  longitude    Float?
+  is_active    Boolean       @default(true)
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  communes     Commune[]
+  postal_codes PostalCode[]
+
+  @@index([province_id])
+  @@index([name_km])
+  @@index([name_en])
+  @@index([slug])
+  @@index([is_active])
+  @@map("districts")
+}
+
+model Commune {
+  id           String        @id @default(uuid())
+  code         String        @unique @db.VarChar(10) // e.g. "120201"
+  district_id  String
+  district     District      @relation(fields: [district_id], references: [id], onDelete: Cascade)
+  name_km      String        @db.VarChar(150)
+  name_en      String        @db.VarChar(150)
+  slug         String        @db.VarChar(150)
+  type         String        @default("Commune") @db.VarChar(50) // "Sangkat", "Khum"
+  latitude     Float?
+  longitude    Float?
+  is_active    Boolean       @default(true)
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  villages     Village[]
+  postal_codes PostalCode[]
+
+  @@index([district_id])
+  @@index([name_km])
+  @@index([name_en])
+  @@index([slug])
+  @@index([is_active])
+  @@map("communes")
+}
+
+model Village {
+  id         String   @id @default(uuid())
+  code       String   @unique @db.VarChar(12) // e.g. "12020101"
+  commune_id String
+  commune    Commune  @relation(fields: [commune_id], references: [id], onDelete: Cascade)
+  name_km    String   @db.VarChar(150)
+  name_en    String   @db.VarChar(150)
+  slug       String   @db.VarChar(150)
+  latitude   Float?
+  longitude  Float?
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([commune_id])
+  @@index([name_km])
+  @@index([name_en])
+  @@index([slug])
+  @@index([is_active])
+  @@map("villages")
+}
+
+model PostalCode {
+  id          String    @id @default(uuid())
+  postal_code String    @db.VarChar(20) // e.g. "12000"
+  province_id String
+  province    Province  @relation(fields: [province_id], references: [id], onDelete: Cascade)
+  district_id String?
+  district    District? @relation(fields: [district_id], references: [id], onDelete: SetNull)
+  commune_id  String?
+  commune     Commune?  @relation(fields: [commune_id], references: [id], onDelete: SetNull)
+  is_active   Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@index([postal_code])
+  @@index([province_id])
+  @@index([district_id])
+  @@index([commune_id])
+  @@index([is_active])
+  @@map("postal_codes")
+}
+
+model DataSource {
+  id               String    @id @default(uuid())
+  name             String    @db.VarChar(255)
+  organization     String    @db.VarChar(255)
+  url              String    @db.VarChar(500)
+  license          String    @db.VarChar(100)
+  description      String?   @db.Text
+  last_verified_at DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  @@map("data_sources")
+}
+
+enum ImportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model DataImport {
+  id              String       @id @default(uuid())
+  file_name       String       @db.VarChar(255)
+  file_type       String       @db.VarChar(50) // "json", "csv"
+  resource_type   String       @default("all") @db.VarChar(50) // "provinces", "districts", "communes", "villages", "postal_codes", "all"
+  status          ImportStatus @default(PENDING)
+  total_records   Int          @default(0)
+  success_records Int          @default(0)
+  failed_records  Int          @default(0)
+  error_log       Json?
+  imported_by     String?      @db.VarChar(255)
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+
+  @@map("data_imports")
+}
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique @db.VarChar(50) // super_admin, admin, data_manager, support, viewer
+  description String?          @db.VarChar(255)
+  is_system   Boolean          @default(false)
+  created_at  DateTime         @default(now())
+  updated_at  DateTime         @updatedAt
+  users       User[]
+  permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  code        String           @unique @db.VarChar(100) // e.g. "province.read", "province.create"
+  description String?          @db.VarChar(255)
+  module      String           @db.VarChar(50) // e.g. "provinces", "users", "system"
+  created_at  DateTime         @default(now())
+  roles       RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  role_id       String
+  role          Role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  permission_id String
+  permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
+
+  @@id([role_id, permission_id])
+  @@map("role_permissions")
+}
+
+model User {
+  id             String         @id @default(uuid())
+  email          String         @unique @db.VarChar(255)
+  password_hash  String         @db.VarChar(255)
+  first_name     String         @db.VarChar(100)
+  last_name      String         @db.VarChar(100)
+  is_active      Boolean        @default(true)
+  role_id        String
+  role           Role           @relation(fields: [role_id], references: [id], onDelete: Restrict)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  api_keys       ApiKey[]
+  refresh_tokens RefreshToken[]
+  audit_logs     AuditLog[]
+  usage_logs     ApiUsageLog[]
+
+  @@index([email])
+  @@index([role_id])
+  @@map("users")
+}
+
+model ApiKey {
+  id           String        @id @default(uuid())
+  user_id      String
+  user         User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  name         String        @db.VarChar(100)
+  key_prefix   String        @db.VarChar(20) // e.g. "kh_live_abc"
+  key_hash     String        @unique @db.VarChar(255)
+  rate_limit   Int           @default(300) // requests per minute
+  last_used_at DateTime?
+  expires_at   DateTime?
+  is_active    Boolean       @default(true)
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  usage_logs   ApiUsageLog[]
+
+  @@index([key_hash])
+  @@index([user_id])
+  @@index([is_active])
+  @@map("api_keys")
+}
+
+model ApiUsageLog {
+  id               String   @id @default(uuid())
+  api_key_id       String?
+  api_key          ApiKey?  @relation(fields: [api_key_id], references: [id], onDelete: SetNull)
+  user_id          String?
+  user             User?    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  endpoint         String   @db.VarChar(255)
+  method           String   @db.VarChar(10)
+  status_code      Int
+  response_time_ms Int
+  ip_address       String   @db.VarChar(45)
+  user_agent       String?  @db.VarChar(500)
+  request_id       String   @db.VarChar(100)
+  created_at       DateTime @default(now())
+
+  @@index([api_key_id])
+  @@index([user_id])
+  @@index([created_at])
+  @@index([request_id])
+  @@map("api_usage_logs")
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid())
+  user_id    String
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  token_hash String    @unique @db.VarChar(255)
+  expires_at DateTime
+  revoked_at DateTime?
+  created_at DateTime  @default(now())
+
+  @@index([token_hash])
+  @@index([user_id])
+  @@map("refresh_tokens")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  user_id     String?
+  user        User?    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  action      String   @db.VarChar(100) // e.g. "ADMIN_CREATE_PROVINCE"
+  resource    String   @db.VarChar(100) // e.g. "provinces"
+  resource_id String?  @db.VarChar(100)
+  old_value   Json?
+  new_value   Json?
+  ip_address  String?  @db.VarChar(45)
+  user_agent  String?  @db.VarChar(500)
+  created_at  DateTime @default(now())
+
+  @@index([user_id])
+  @@index([action])
+  @@index([resource])
+  @@index([created_at])
+  @@map("audit_logs")
+}
