@@ -2,7 +2,9 @@
   <div class="flex min-h-[calc(100vh-14rem)] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
     <div class="w-full max-w-sm space-y-6">
       <div class="space-y-2 text-center">
-        <span class="text-3xl">🇰🇭</span>
+        <router-link to="/" class="inline-block hover:opacity-90 transition-opacity">
+          <img src="/logo_v4.png" alt="KhmerAPI" class="h-12 w-auto mx-auto object-contain mb-1" />
+        </router-link>
         <h1 class="text-2xl font-bold tracking-tight text-zinc-900">Create Developer Account</h1>
         <p class="text-xs text-zinc-500">
           Get your free API key and 300 requests/minute limit in seconds.

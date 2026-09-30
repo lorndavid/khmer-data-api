@@ -1,11 +1,11 @@
 <template>
   <footer class="border-t border-zinc-200 bg-[#FAFAFA] text-zinc-600 transition-colors font-battambang">
-    <div class="mx-auto w-[90%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 py-12">
+    <div class="mx-auto w-[92%] lg:w-[85%] max-w-[1440px] px-2 sm:px-4 py-12">
       <div class="grid grid-cols-2 gap-8 md:grid-cols-5 lg:gap-12">
         <!-- Brand column -->
         <div class="col-span-2 space-y-3">
-          <div class="flex items-center gap-2">
-            <span class="text-xl">🇰🇭</span>
+          <div class="flex items-center gap-2.5">
+            <img src="/logo_v4.png" alt="KhmerAPI Logo" class="h-8 w-auto object-contain" />
             <span class="font-bold tracking-tight text-zinc-900 text-base">KhmerAPI</span>
             <span class="rounded bg-zinc-100 px-1.5 py-0.2 text-[10px] font-mono font-medium text-zinc-700 border border-zinc-200">v1.0</span>
           </div>

@@ -138,7 +138,7 @@ code[class*="language-"] {
 }
 
 /* ============================================= */
-/* 🎬 Hero Section Animations                   */
+/* Hero Section Animations                       */
 /* ============================================= */
 
 /* Staggered Fade-In-Up Reveal */
@@ -314,15 +314,16 @@ code[class*="language-"] {
   animation: heroFloat 6s ease-in-out infinite;
 }
 
-/* Hero Video Frame Styling */
+/* Hero Video Frame Styling - Borderless & Cinematic */
 .hero-video-frame {
   position: relative;
-  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(24, 24, 27, 0.08);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.15), 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none !important;
 }
 
 .hero-video-frame:hover {
-  box-shadow: 0 25px 60px -15px rgba(16, 185, 129, 0.15), 0 0 0 1px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 35px 80px -20px rgba(16, 185, 129, 0.2), 0 15px 40px -10px rgba(0, 0, 0, 0.12);
 }
 
 .hero-video-frame video {
@@ -330,6 +331,8 @@ code[class*="language-"] {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border: none;
+  outline: none;
 }
 
 /* Responsive: reduce motion for users who prefer it */

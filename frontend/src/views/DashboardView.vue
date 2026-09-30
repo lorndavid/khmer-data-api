@@ -285,7 +285,10 @@
         <!-- If key just created: show raw key once -->
         <div v-if="createdRawKey" class="space-y-4">
           <div class="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 space-y-1">
-            <div class="font-bold">⚠️ Save this API key now</div>
+            <div class="font-bold flex items-center gap-1.5">
+              <AlertTriangleIcon class="w-4 h-4 text-amber-600" />
+              <span>Save this API key now</span>
+            </div>
             <div>For security reasons, this key will never be shown again.</div>
           </div>
 
@@ -376,7 +379,8 @@ import {
   Copy as CopyIcon,
   Check as CheckIcon,
   X as XIcon,
-  Loader2 as Loader2Icon
+  Loader2 as Loader2Icon,
+  AlertTriangle as AlertTriangleIcon
 } from 'lucide-vue-next';
 import CodeBlock from '../components/common/CodeBlock.vue';
 import { useAuthStore } from '../stores/auth.store';

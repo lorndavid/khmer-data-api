@@ -13,9 +13,9 @@
         <button
           v-if="searchQuery"
           @click="searchQuery = ''"
-          class="absolute right-2 top-2 text-zinc-400 hover:text-zinc-600 text-xs cursor-pointer"
+          class="absolute right-2 top-2 text-zinc-400 hover:text-zinc-600 cursor-pointer p-0.5 rounded"
         >
-          ✕
+          <XIcon class="w-3.5 h-3.5" />
         </button>
       </div>
 
@@ -104,7 +104,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { Search as SearchIcon } from 'lucide-vue-next';
+import { Search as SearchIcon, X as XIcon } from 'lucide-vue-next';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { useLangStore } from '../../stores/lang.store';
 

@@ -14,7 +14,7 @@
             class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md font-medium transition-all cursor-pointer select-none"
             :class="activeLayerId === layer.id ? 'bg-zinc-900 text-white shadow-2xs font-semibold' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100'"
           >
-            <span>{{ layer.icon }}</span>
+            <component :is="layer.icon" class="w-3.5 h-3.5" />
             <span>{{ layer.label }}</span>
             <span class="text-[10px] opacity-70 font-mono">({{ layer.count }})</span>
           </button>
@@ -31,7 +31,13 @@
               placeholder="Search province, district, commune..."
               class="w-full rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-900 focus:border-zinc-900 focus:outline-none placeholder:text-zinc-400 font-sans shadow-2xs"
             />
-            <span v-if="searchQuery" @click="searchQuery = ''; handleSearch();" class="absolute right-2.5 top-2 text-zinc-400 hover:text-zinc-700 cursor-pointer text-xs">✕</span>
+            <button
+              v-if="searchQuery"
+              @click="searchQuery = ''; handleSearch();"
+              class="absolute right-2.5 top-2 text-zinc-400 hover:text-zinc-700 cursor-pointer p-0.5 rounded"
+            >
+              <XIcon class="w-3.5 h-3.5" />
+            </button>
           </div>
 
           <!-- Basemap Style Switcher -->
@@ -59,8 +65,8 @@
 
       <!-- Real Hierarchy Drilldown Bar (Province > District > Commune > Villages) -->
       <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-zinc-200/60 font-sans">
-        <span class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1">
-          <span>⚡</span>
+        <span class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
+          <ZapIcon class="w-3.5 h-3.5 text-amber-500" />
           <span>Fast Drilldown:</span>
         </span>
 
@@ -238,7 +244,7 @@
             <div v-if="villageList.length > 0" class="space-y-2">
               <div class="flex items-center justify-between text-xs">
                 <span class="font-bold text-zinc-800 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-                  <span>🏡</span>
+                  <HomeIcon class="w-3.5 h-3.5 text-zinc-600" />
                   <span>Villages in Commune ({{ villageList.length }})</span>
                 </span>
               </div>
@@ -311,7 +317,14 @@ import {
   Loader2 as Loader2Icon,
   Copy as CopyIcon,
   Check as CheckIcon,
-  X as XIcon
+  X as XIcon,
+  Landmark as LandmarkIcon,
+  Building2 as Building2Icon,
+  Home as HomeIcon,
+  MapPin as MapPinIcon,
+  GitCommit as GitCommitIcon,
+  Map as MapIcon,
+  Zap as ZapIcon
 } from 'lucide-vue-next';
 import L from 'leaflet';
 import axios from 'axios';
@@ -319,18 +332,18 @@ import axios from 'axios';
 interface LayerMeta {
   id: 'admin1' | 'admin2' | 'admin3' | 'points' | 'lines' | 'admin0';
   label: string;
-  icon: string;
+  icon: any;
   count: string;
   file: string;
 }
 
 const LAYERS: LayerMeta[] = [
-  { id: 'admin1', label: 'Provinces', icon: '🏛️', count: '25', file: 'khm_admin1.geojson' },
-  { id: 'admin2', label: 'Districts', icon: '🏙️', count: '209', file: 'khm_admin2.geojson' },
-  { id: 'admin3', label: 'Communes', icon: '🏡', count: '1,633', file: 'khm_admin3.geojson' },
-  { id: 'points', label: 'Capitals & Points', icon: '📍', count: '1,856', file: 'khm_adminpoints.geojson' },
-  { id: 'lines', label: 'Boundary Lines', icon: '〰️', count: '4,861', file: 'khm_adminlines.geojson' },
-  { id: 'admin0', label: 'National Border', icon: '🗺️', count: '1', file: 'khm_admin0.geojson' },
+  { id: 'admin1', label: 'Provinces', icon: LandmarkIcon, count: '25', file: 'khm_admin1.geojson' },
+  { id: 'admin2', label: 'Districts', icon: Building2Icon, count: '209', file: 'khm_admin2.geojson' },
+  { id: 'admin3', label: 'Communes', icon: HomeIcon, count: '1,633', file: 'khm_admin3.geojson' },
+  { id: 'points', label: 'Capitals & Points', icon: MapPinIcon, count: '1,856', file: 'khm_adminpoints.geojson' },
+  { id: 'lines', label: 'Boundary Lines', icon: GitCommitIcon, count: '4,861', file: 'khm_adminlines.geojson' },
+  { id: 'admin0', label: 'National Border', icon: MapIcon, count: '1', file: 'khm_admin0.geojson' },
 ];
 
 const mapContainer = ref<HTMLElement | null>(null);
@@ -500,7 +513,7 @@ function closeDrawer() {
 }
 
 // ==========================================
-// 🏛️ Hierarchy API Loaders (Real Data)
+// Hierarchy API Loaders (Real Data)
 // ==========================================
 async function loadProvinces() {
   try {

@@ -25,104 +25,26 @@
         <div class="particle particle-8"></div>
       </div>
 
-      <div class="mx-auto w-[92%] sm:w-[88%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 text-center">
+      <div class="mx-auto w-[92%] sm:w-[88%] lg:w-[80%] max-w-[1440px] px-2 sm:px-4 text-center space-y-6 sm:space-y-8">
         
-        <!-- Live Status & Release Pill — entrance animation -->
-        <div class="hero-reveal hero-reveal-1 inline-flex items-center justify-center mb-6 sm:mb-8">
-          <div class="group relative inline-flex items-center gap-2 sm:gap-2.5 rounded-full border border-zinc-200/90 bg-white/90 backdrop-blur-md px-4 sm:px-5 py-2 text-xs font-semibold text-zinc-800 shadow-subtle hover:border-emerald-300 hover:shadow-elevated transition-all duration-300">
-            <!-- Shimmer sweep -->
-            <div class="absolute inset-0 rounded-full overflow-hidden">
-              <div class="badge-shimmer"></div>
-            </div>
-            <span class="relative flex h-2 w-2">
-              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-            </span>
-            <span class="relative font-bold text-zinc-900 tracking-tight">{{ langStore.t.home.badge }}</span>
-            <span class="relative text-zinc-300">|</span>
-            <span class="relative font-mono text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
-              Zero Auth • CORS Open
-            </span>
-          </div>
-        </div>
-
-        <!-- Main Title — staggered word reveal -->
-        <div class="hero-reveal hero-reveal-2 space-y-5 max-w-4xl mx-auto mb-6 sm:mb-8">
-          <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-black tracking-tight text-zinc-900 leading-[1.12] sm:leading-[1.1]">
+        <!-- Main Title & Subtitle (GSAP Animated) -->
+        <div class="space-y-4 sm:space-y-5 max-w-4xl mx-auto">
+          <h1 class="gsap-hero-title text-4xl sm:text-5xl lg:text-[3.75rem] xl:text-6xl font-black tracking-tight text-zinc-900 leading-[1.12] sm:leading-[1.1]">
             <span class="hero-gradient-text">
               {{ langStore.t.home.heroTitle }}
             </span>
           </h1>
 
-          <p class="hero-reveal hero-reveal-3 mx-auto max-w-2xl text-sm sm:text-base lg:text-lg text-zinc-500 leading-relaxed font-normal">
+          <p class="gsap-hero-subtitle mx-auto max-w-2xl text-sm sm:text-base lg:text-lg text-zinc-600 leading-relaxed font-normal">
             {{ langStore.t.home.heroSubtitle }}
           </p>
         </div>
 
-        <!-- cURL Quick-Copy Bar — slide up -->
-        <div class="hero-reveal hero-reveal-4 mx-auto max-w-xl mb-6 sm:mb-8">
-          <div class="group flex items-center justify-between gap-2 rounded-2xl border border-zinc-200/80 bg-white/95 backdrop-blur-md p-1.5 sm:p-2 shadow-subtle hover:border-zinc-300 hover:shadow-elevated transition-all duration-300">
-            <div class="flex items-center gap-2 sm:gap-2.5 pl-2 sm:pl-3 font-mono text-[11px] sm:text-xs text-zinc-700 truncate min-w-0">
-              <span class="rounded bg-emerald-50 text-emerald-700 px-1.5 py-0.5 text-[10px] font-bold border border-emerald-200/60 select-none shrink-0">
-                GET
-              </span>
-              <span class="font-semibold text-zinc-900 truncate">
-                https://api.khmerapi.dev/api/v1/{{ activeHeroEndpoint.path }}
-              </span>
-            </div>
-            <button
-              @click="copyQuickUrl"
-              class="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 sm:px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 active:scale-95 transition-all duration-200 cursor-pointer shadow-2xs shrink-0"
-              title="Copy cURL Command"
-            >
-              <component :is="urlCopied ? CheckIcon : CopyIcon" class="w-3.5 h-3.5 text-emerald-400" v-if="urlCopied" />
-              <CopyIcon v-else class="w-3.5 h-3.5" />
-              <span>{{ urlCopied ? langStore.t.common.copied : 'Copy cURL' }}</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Action CTAs — staggered pop-in -->
-        <div class="hero-reveal hero-reveal-5 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mb-8 sm:mb-10">
-          <router-link
-            to="/explorer"
-            class="group inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white hover:bg-zinc-800 active:scale-95 transition-all duration-200 shadow-subtle hover:shadow-elevated"
-          >
-            <CompassIcon class="w-4 h-4 text-emerald-400 group-hover:rotate-45 transition-transform duration-300" />
-            <span>{{ langStore.t.home.exploreBtn }}</span>
-          </router-link>
-
-          <router-link
-            to="/docs"
-            class="group inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-300 active:scale-95 transition-all duration-200 shadow-2xs"
-          >
-            <BookOpenIcon class="w-4 h-4 text-zinc-500 group-hover:text-zinc-800 transition-colors" />
-            <span>{{ langStore.t.home.docsBtn }}</span>
-          </router-link>
-
-          <router-link
-            to="/demographics"
-            class="group inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-zinc-800 hover:bg-zinc-50 hover:border-zinc-300 active:scale-95 transition-all duration-200 shadow-2xs"
-          >
-            <UsersIcon class="w-4 h-4 text-sky-600" />
-            <span>{{ langStore.t.nav.demographics }}</span>
-            <span class="rounded bg-sky-100 text-sky-800 text-[10px] font-mono font-bold px-1.5 py-0.5 group-hover:bg-sky-200 transition-colors">17.3M</span>
-          </router-link>
-
-          <router-link
-            to="/status"
-            class="hidden sm:inline-flex items-center gap-2 rounded-xl border border-zinc-200/80 bg-zinc-50/80 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 active:scale-95 transition-all duration-200"
-          >
-            <ActivityIcon class="w-4 h-4 text-emerald-600" />
-            <span>{{ langStore.t.nav.status }} ({{ statusStore.latencyMs }}ms)</span>
-          </router-link>
-        </div>
-
-        <!-- Hero Video Showcase — cinematic floating animation -->
-        <div class="hero-reveal hero-reveal-6 relative mx-auto max-w-4xl mb-10 sm:mb-14">
+        <!-- Hero Video Showcase — Seamless, Borderless with Bottom Overlaid CTAs -->
+        <div class="gsap-video-container relative mx-auto max-w-5xl mb-6 sm:mb-10">
           <div class="hero-float-container relative">
-            <!-- Glassmorphic video frame -->
-            <div class="hero-video-frame rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/60 shadow-elevated bg-zinc-950">
+            <!-- Borderless Video Frame -->
+            <div class="hero-video-frame rounded-2xl sm:rounded-3xl overflow-hidden bg-zinc-950 relative">
               <video
                 autoplay
                 loop
@@ -130,21 +52,49 @@
                 playsinline
                 preload="auto"
                 poster="/hero-illustration.jpg"
-                class="w-full h-auto block"
+                class="w-full h-auto block select-none"
               >
                 <source src="/gemini_generated_video_1eb6cc98.mp4" type="video/mp4" />
               </video>
+
+              <!-- Bottom Overlaid CTAs on the Video (Single Row, No Dark Container) -->
+              <div class="absolute bottom-3 sm:bottom-6 left-0 right-0 px-2 sm:px-4 z-10 flex items-center justify-center">
+                <div class="flex items-center flex-nowrap justify-center gap-1.5 sm:gap-3 overflow-x-auto no-scrollbar py-1 max-w-full">
+                  <router-link
+                    to="/explorer"
+                    class="gsap-hero-cta group inline-flex items-center gap-1.5 sm:gap-2 rounded-xl bg-zinc-900/90 hover:bg-zinc-900 backdrop-blur-md px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white shadow-elevated hover:shadow-2xl active:scale-95 transition-all duration-200 whitespace-nowrap shrink-0 border border-white/20"
+                  >
+                    <CompassIcon class="w-3.5 sm:w-4 h-3.5 sm:h-4 text-emerald-400 group-hover:rotate-45 transition-transform duration-300" />
+                    <span>{{ langStore.t.home.exploreBtn }}</span>
+                  </router-link>
+
+                  <router-link
+                    to="/docs"
+                    class="gsap-hero-cta group inline-flex items-center gap-1.5 sm:gap-2 rounded-xl bg-white/95 hover:bg-white backdrop-blur-md px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-zinc-900 shadow-elevated hover:shadow-2xl active:scale-95 transition-all duration-200 whitespace-nowrap shrink-0 border border-zinc-200/80"
+                  >
+                    <BookOpenIcon class="w-3.5 sm:w-4 h-3.5 sm:h-4 text-zinc-500 group-hover:text-zinc-900 transition-colors" />
+                    <span>{{ langStore.t.home.docsBtn }}</span>
+                  </router-link>
+
+                  <router-link
+                    to="/demographics"
+                    class="gsap-hero-cta group inline-flex items-center gap-1.5 sm:gap-2 rounded-xl bg-white/95 hover:bg-white backdrop-blur-md px-2.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-zinc-900 shadow-elevated hover:shadow-2xl active:scale-95 transition-all duration-200 whitespace-nowrap shrink-0 border border-zinc-200/80"
+                  >
+                    <UsersIcon class="w-3.5 sm:w-4 h-3.5 sm:h-4 text-sky-600" />
+                    <span>{{ langStore.t.nav.demographics }}</span>
+                    <span class="rounded bg-sky-100 text-sky-800 text-[10px] font-mono font-bold px-1.5 py-0.5 group-hover:bg-sky-200 transition-colors">17.3M</span>
+                  </router-link>
+                </div>
+              </div>
             </div>
-            <!-- Ambient glow beneath video -->
-            <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-4/5 h-16 bg-gradient-to-r from-emerald-400/15 via-sky-400/10 to-violet-400/10 blur-3xl rounded-full"></div>
-            <!-- Subtle side glows -->
-            <div class="absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-32 bg-emerald-400/8 blur-2xl rounded-full hidden lg:block"></div>
-            <div class="absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-32 bg-sky-400/8 blur-2xl rounded-full hidden lg:block"></div>
+
+            <!-- Soft Ambient Glows beneath video -->
+            <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-4/5 h-16 bg-gradient-to-r from-emerald-400/20 via-sky-400/15 to-violet-400/15 blur-3xl rounded-full pointer-events-none"></div>
           </div>
         </div>
 
         <!-- Interactive Developer Console — slide up with glow -->
-        <div class="hero-reveal hero-reveal-7 text-left">
+        <div class="gsap-hero-console text-left">
           <div class="rounded-2xl border border-zinc-200/90 bg-white shadow-card overflow-hidden transition-all duration-300 hover:shadow-elevated hover:border-zinc-300">
             
             <!-- Terminal Title Bar -->
@@ -167,7 +117,7 @@
                         : 'text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900'
                     ]"
                   >
-                    <span class="text-xs">{{ ep.icon }}</span>
+                    <component :is="ep.icon" class="w-3.5 h-3.5 shrink-0" />
                     <span class="font-mono text-[11px]">{{ ep.title }}</span>
                     <span class="font-battambang text-[10px] opacity-80" v-if="langStore.currentLang === 'km'">{{ ep.kmTag }}</span>
                   </button>
@@ -186,7 +136,7 @@
               <div class="lg:col-span-5 p-3.5 sm:p-5 space-y-3 bg-zinc-50/40">
                 <div class="flex items-center justify-between text-xs text-zinc-500">
                   <span class="font-bold uppercase tracking-wider text-zinc-800 text-[11px] flex items-center gap-1.5">
-                    <span>⚡</span>
+                    <ZapIcon class="w-3.5 h-3.5 text-amber-500" />
                     <span>Client Code</span>
                   </span>
                   <span class="font-mono text-[11px] text-zinc-400">cURL, JS, Py, Dart, Go</span>
@@ -204,7 +154,7 @@
                 <div class="flex items-center justify-between text-xs text-zinc-500">
                   <div class="flex items-center gap-2">
                     <span class="font-bold uppercase tracking-wider text-zinc-800 text-[11px] flex items-center gap-1.5">
-                      <span>📄</span>
+                      <FileCodeIcon class="w-3.5 h-3.5 text-zinc-500" />
                       <span>Live JSON Output</span>
                     </span>
                   </div>
@@ -230,55 +180,81 @@
       </div>
     </section>
 
-    <!-- Public Statistics Summary Strip -->
-    <section class="border-y border-zinc-200/80 bg-zinc-50/60 py-8 sm:py-10">
-      <div class="mx-auto w-[92%] sm:w-[88%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4">
-        <div class="grid grid-cols-2 gap-4 sm:gap-6 sm:grid-cols-3 lg:grid-cols-6 text-center">
-          <div class="space-y-1 p-2">
-            <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono">
-              {{ langStore.currentLang === 'km' ? '២៥' : '25' }}
+    <!-- Public Statistics Summary Strip (Section Container with Borderless Points) -->
+    <section ref="statsSectionRef" class="border-y border-zinc-200/80 bg-zinc-50/60 py-8 sm:py-10 relative overflow-hidden">
+      <div class="mx-auto w-[94%] sm:w-[90%] lg:w-[88%] max-w-[1440px] px-2 sm:px-4">
+        <div class="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 sm:grid-cols-3 lg:grid-cols-6 text-center">
+          
+          <!-- Provinces -->
+          <div class="gsap-stat-card space-y-1 p-2 rounded-xl hover:bg-zinc-100/60 transition-colors duration-200 flex flex-col items-center justify-center">
+            <div class="whitespace-nowrap text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 font-mono">
+              {{ displayProvinces }}
             </div>
-            <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statProvinces }}</div>
+            <div class="whitespace-nowrap text-xs font-semibold text-zinc-500 font-battambang">
+              {{ langStore.t.home.statProvinces }}
+            </div>
           </div>
 
-          <div class="space-y-1 p-2">
-            <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono">
-              {{ langStore.currentLang === 'km' ? '២១០' : '210' }}
+          <!-- Districts -->
+          <div class="gsap-stat-card space-y-1 p-2 rounded-xl hover:bg-zinc-100/60 transition-colors duration-200 flex flex-col items-center justify-center">
+            <div class="whitespace-nowrap text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 font-mono">
+              {{ displayDistricts }}
             </div>
-            <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statDistricts }}</div>
+            <div class="whitespace-nowrap text-xs font-semibold text-zinc-500 font-battambang">
+              {{ langStore.t.home.statDistricts }}
+            </div>
           </div>
 
-          <div class="space-y-1 p-2">
-            <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono">
-              {{ langStore.currentLang === 'km' ? '១,៦៦១' : '1,661' }}
+          <!-- Communes -->
+          <div class="gsap-stat-card space-y-1 p-2 rounded-xl hover:bg-zinc-100/60 transition-colors duration-200 flex flex-col items-center justify-center">
+            <div class="whitespace-nowrap text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 font-mono">
+              {{ displayCommunes }}
             </div>
-            <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statCommunes }}</div>
+            <div class="whitespace-nowrap text-xs font-semibold text-zinc-500 font-battambang">
+              {{ langStore.t.home.statCommunes }}
+            </div>
           </div>
 
-          <div class="space-y-1 p-2">
-            <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono">
-              {{ langStore.currentLang === 'km' ? '១៤,៥២៨' : '14,528' }}
+          <!-- Villages -->
+          <div class="gsap-stat-card space-y-1 p-2 rounded-xl hover:bg-zinc-100/60 transition-colors duration-200 flex flex-col items-center justify-center">
+            <div class="whitespace-nowrap text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 font-mono">
+              {{ displayVillages }}
             </div>
-            <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statVillages }}</div>
+            <div class="whitespace-nowrap text-xs font-semibold text-zinc-500 font-battambang">
+              {{ langStore.t.home.statVillages }}
+            </div>
           </div>
 
-          <div class="space-y-1 p-2">
-            <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono">
-              {{ langStore.currentLang === 'km' ? '១៧.៣ លាន' : '17.3M' }}
+          <!-- Population -->
+          <div class="gsap-stat-card space-y-1 p-2 rounded-xl hover:bg-zinc-100/60 transition-colors duration-200 flex flex-col items-center justify-center">
+            <div class="whitespace-nowrap text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 font-mono">
+              {{ displayPopulation }}
             </div>
-            <div class="text-xs font-medium text-zinc-500">{{ langStore.t.home.statPopulation }}</div>
+            <div class="whitespace-nowrap text-xs font-semibold text-zinc-500 font-battambang">
+              {{ langStore.t.home.statPopulation }}
+            </div>
           </div>
 
-          <div class="col-span-2 sm:col-span-3 lg:col-span-1 space-y-1 p-2">
-            <div class="text-2xl sm:text-3xl font-bold tracking-tight text-emerald-600 font-mono">&lt; 10ms</div>
-            <div class="text-xs font-medium text-zinc-500">Average Latency</div>
+          <!-- Latency -->
+          <div class="gsap-stat-card col-span-2 sm:col-span-3 lg:col-span-1 space-y-1 p-2 rounded-xl hover:bg-emerald-50/60 transition-colors duration-200 flex flex-col items-center justify-center">
+            <div class="whitespace-nowrap flex items-center justify-center gap-1.5 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-emerald-600 font-mono">
+              <span>{{ displayLatency }}</span>
+              <span class="relative flex h-2 w-2 shrink-0">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              </span>
+            </div>
+            <div class="whitespace-nowrap text-xs font-semibold text-zinc-500 font-battambang">
+              {{ langStore.currentLang === 'km' ? 'ល្បឿនមធ្យម' : 'Average Latency' }}
+            </div>
           </div>
+
         </div>
       </div>
     </section>
 
     <!-- Clean Core Features Grid -->
-    <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 space-y-8 sm:space-y-10">
+    <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[85%] max-w-[1440px] px-2 sm:px-4 space-y-8 sm:space-y-10">
       <div class="space-y-2 text-left max-w-2xl">
         <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">{{ langStore.t.home.featuresTitle }}</h2>
         <p class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900">
@@ -300,8 +276,8 @@
 
         <!-- Feature 2 -->
         <div class="rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-2xs hover:shadow-subtle hover:border-zinc-300 transition-all space-y-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900 font-battambang font-bold text-base">
-            🇰🇭
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900">
+            <Building2Icon class="w-5 h-5 text-zinc-800" />
           </div>
           <h3 class="text-sm font-bold text-zinc-900">{{ langStore.t.home.feature1Title }}</h3>
           <p class="text-xs text-zinc-600 leading-relaxed">
@@ -323,7 +299,7 @@
     </section>
 
     <!-- Interactive Cambodia GeoJSON Map Section -->
-    <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 space-y-6">
+    <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[85%] max-w-[1440px] px-2 sm:px-4 space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200/80 pb-4">
         <div class="space-y-1">
           <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Spatial Intelligence</h2>
@@ -344,7 +320,7 @@
     </section>
 
     <!-- Embedded Interactive Quick Playground -->
-    <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 space-y-6">
+    <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[85%] max-w-[1440px] px-2 sm:px-4 space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200/80 pb-4">
         <div class="space-y-1">
           <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Live Playground</h2>
@@ -367,7 +343,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, reactive, onMounted, onUnmounted } from 'vue';
+import gsap from 'gsap';
 import {
   Compass as CompassIcon,
   BookOpen as BookOpenIcon,
@@ -378,6 +355,12 @@ import {
   Copy as CopyIcon,
   Check as CheckIcon,
   Users as UsersIcon,
+  Landmark as LandmarkIcon,
+  BarChart3 as BarChart3Icon,
+  Mail as MailIcon,
+  Search as SearchIcon,
+  FileCode as FileCodeIcon,
+  Building2 as Building2Icon,
 } from 'lucide-vue-next';
 import CodeBlock from '../components/common/CodeBlock.vue';
 import JsonViewer from '../components/common/JsonViewer.vue';
@@ -390,12 +373,150 @@ const statusStore = useStatusStore();
 const langStore = useLangStore();
 const urlCopied = ref(false);
 const activeEndpointIdx = ref(0);
+const statsSectionRef = ref<HTMLElement | null>(null);
+
+// Reactive statistics for scroll animation
+const statsState = reactive({
+  provinces: 0,
+  districts: 0,
+  communes: 0,
+  villages: 0,
+  population: 0,
+  latency: 50,
+  hasAnimated: false,
+});
+
+function toKhmerDigits(numStr: string | number): string {
+  const kmDigits = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
+  return String(numStr).replace(/[0-9]/g, (d) => kmDigits[parseInt(d, 10)]);
+}
+
+const displayProvinces = computed(() => {
+  const val = Math.round(statsState.provinces);
+  return langStore.currentLang === 'km' ? toKhmerDigits(val) : val.toString();
+});
+
+const displayDistricts = computed(() => {
+  const val = Math.round(statsState.districts);
+  return langStore.currentLang === 'km' ? toKhmerDigits(val) : val.toString();
+});
+
+const displayCommunes = computed(() => {
+  const val = Math.round(statsState.communes).toLocaleString();
+  return langStore.currentLang === 'km' ? toKhmerDigits(val) : val;
+});
+
+const displayVillages = computed(() => {
+  const val = Math.round(statsState.villages).toLocaleString();
+  return langStore.currentLang === 'km' ? toKhmerDigits(val) : val;
+});
+
+const displayPopulation = computed(() => {
+  const val = statsState.population;
+  if (langStore.currentLang === 'km') {
+    return val >= 17.3 ? '១៧.៣\u00A0លាន' : `${toKhmerDigits(val.toFixed(1))}\u00A0លាន`;
+  }
+  return `${val.toFixed(1)}M`;
+});
+
+const displayLatency = computed(() => {
+  const val = Math.round(statsState.latency);
+  return `< ${val}ms`;
+});
+
+let statsObserver: IntersectionObserver | null = null;
+
+function startStatsAnimation() {
+  if (statsState.hasAnimated) return;
+  statsState.hasAnimated = true;
+
+  // Stagger cards entrance
+  gsap.fromTo(
+    '.gsap-stat-card',
+    { opacity: 0, y: 24, scale: 0.94 },
+    { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.65, ease: 'back.out(1.4)' }
+  );
+
+  // Smooth count up numbers
+  gsap.to(statsState, {
+    provinces: 25,
+    districts: 210,
+    communes: 1661,
+    villages: 14528,
+    population: 17.3,
+    latency: 8,
+    duration: 1.8,
+    ease: 'power2.out',
+  });
+}
+
+onMounted(() => {
+  // GSAP Smooth Entrance Timeline for Hero
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.fromTo(
+    '.gsap-hero-title',
+    { opacity: 0, y: 30, filter: 'blur(8px)' },
+    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, delay: 0.15 }
+  )
+  .fromTo(
+    '.gsap-hero-subtitle',
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.8 },
+    '-=0.6'
+  )
+  .fromTo(
+    '.gsap-video-container',
+    { opacity: 0, scale: 0.96, y: 25 },
+    { opacity: 1, scale: 1, y: 0, duration: 1.0, ease: 'power2.out' },
+    '-=0.5'
+  )
+  .fromTo(
+    '.gsap-hero-cta',
+    { opacity: 0, y: 20, scale: 0.92 },
+    { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.6, ease: 'back.out(1.4)' },
+    '-=0.6'
+  )
+  .fromTo(
+    '.gsap-hero-console',
+    { opacity: 0, y: 35 },
+    { opacity: 1, y: 0, duration: 0.8 },
+    '-=0.4'
+  );
+
+  // IntersectionObserver for Stats section on scroll
+  if (statsSectionRef.value) {
+    statsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            startStatsAnimation();
+            if (statsObserver && statsSectionRef.value) {
+              statsObserver.unobserve(statsSectionRef.value);
+            }
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    statsObserver.observe(statsSectionRef.value);
+  }
+
+  statusStore.checkHealth();
+  statusStore.fetchStatistics();
+});
+
+onUnmounted(() => {
+  if (statsObserver) {
+    statsObserver.disconnect();
+  }
+});
 
 const heroEndpoints = [
   {
     id: 'provinces',
     title: '/provinces',
-    icon: '🏛️',
+    icon: LandmarkIcon,
     kmTag: '២៥ ខេត្ត',
     path: 'provinces?limit=2',
     endpoint: '/provinces?limit=2',
@@ -435,7 +556,7 @@ const heroEndpoints = [
   {
     id: 'demographics',
     title: '/demographics',
-    icon: '📊',
+    icon: BarChart3Icon,
     kmTag: '១៧.៣ លាន',
     path: 'demographics/population',
     endpoint: '/demographics/population',
@@ -463,7 +584,7 @@ const heroEndpoints = [
   {
     id: 'postal',
     title: '/postal-codes',
-    icon: '📮',
+    icon: MailIcon,
     kmTag: 'ប្រៃសណីយ៍',
     path: 'postal-codes/12000',
     endpoint: '/postal-codes/12000',
@@ -485,7 +606,7 @@ const heroEndpoints = [
   {
     id: 'search',
     title: '/search',
-    icon: '🔍',
+    icon: SearchIcon,
     kmTag: 'ស្វែងរក',
     path: 'search?q=Angkor',
     endpoint: '/search?q=Angkor',
@@ -528,9 +649,4 @@ async function copyQuickUrl() {
     // Fallback
   }
 }
-
-onMounted(() => {
-  statusStore.checkHealth();
-  statusStore.fetchStatistics();
-});
 </script>
