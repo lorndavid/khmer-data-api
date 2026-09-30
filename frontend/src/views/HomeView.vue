@@ -1,46 +1,67 @@
 <template>
   <div class="space-y-16 sm:space-y-24 pb-20 font-battambang">
     <!-- Hero Section -->
-    <section class="relative pt-6 sm:pt-12 lg:pt-16 overflow-hidden">
-      <!-- Ambient Background Glow & Tech Grid -->
-      <div class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
-        <div class="h-[350px] sm:h-[500px] w-[90vw] max-w-[1000px] bg-gradient-to-tr from-emerald-100/50 via-sky-100/40 to-indigo-100/30 blur-3xl rounded-full opacity-70"></div>
+    <section class="relative pt-8 sm:pt-14 lg:pt-20 pb-4 sm:pb-8 overflow-hidden">
+      
+      <!-- Animated Background Layer -->
+      <div class="pointer-events-none absolute inset-0 -z-10">
+        <!-- Animated gradient orbs -->
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-orb hero-orb-3"></div>
+        <!-- Dot grid -->
+        <div class="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:28px_28px] opacity-50"></div>
       </div>
-      <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] opacity-60"></div>
 
-      <div class="mx-auto w-[92%] sm:w-[88%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 text-center space-y-6 sm:space-y-8">
+      <!-- Floating Particles -->
+      <div class="pointer-events-none absolute inset-0 -z-5 overflow-hidden">
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+        <div class="particle particle-3"></div>
+        <div class="particle particle-4"></div>
+        <div class="particle particle-5"></div>
+        <div class="particle particle-6"></div>
+        <div class="particle particle-7"></div>
+        <div class="particle particle-8"></div>
+      </div>
+
+      <div class="mx-auto w-[92%] sm:w-[88%] lg:w-[70%] max-w-[1440px] px-2 sm:px-4 text-center">
         
-        <!-- Live Status & Release Pill -->
-        <div class="inline-flex items-center justify-center">
-          <div class="inline-flex items-center gap-2 sm:gap-2.5 rounded-full border border-zinc-200/90 bg-white/90 backdrop-blur-md px-3.5 sm:px-4 py-1.5 text-xs font-semibold text-zinc-800 shadow-2xs hover:border-zinc-300 hover:shadow-subtle transition-all">
+        <!-- Live Status & Release Pill — entrance animation -->
+        <div class="hero-reveal hero-reveal-1 inline-flex items-center justify-center mb-6 sm:mb-8">
+          <div class="group relative inline-flex items-center gap-2 sm:gap-2.5 rounded-full border border-zinc-200/90 bg-white/90 backdrop-blur-md px-4 sm:px-5 py-2 text-xs font-semibold text-zinc-800 shadow-subtle hover:border-emerald-300 hover:shadow-elevated transition-all duration-300">
+            <!-- Shimmer sweep -->
+            <div class="absolute inset-0 rounded-full overflow-hidden">
+              <div class="badge-shimmer"></div>
+            </div>
             <span class="relative flex h-2 w-2">
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
             </span>
-            <span class="font-bold text-zinc-900 tracking-tight">{{ langStore.t.home.badge }}</span>
-            <span class="text-zinc-300">|</span>
-            <span class="font-mono text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+            <span class="relative font-bold text-zinc-900 tracking-tight">{{ langStore.t.home.badge }}</span>
+            <span class="relative text-zinc-300">|</span>
+            <span class="relative font-mono text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
               Zero Auth • CORS Open
             </span>
           </div>
         </div>
 
-        <!-- Main Title & Subtitle -->
-        <div class="space-y-4 max-w-4xl mx-auto">
-          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-900 leading-[1.18] sm:leading-[1.15]">
-            <span class="bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-700 bg-clip-text text-transparent">
+        <!-- Main Title — staggered word reveal -->
+        <div class="hero-reveal hero-reveal-2 space-y-5 max-w-4xl mx-auto mb-6 sm:mb-8">
+          <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-black tracking-tight text-zinc-900 leading-[1.12] sm:leading-[1.1]">
+            <span class="hero-gradient-text">
               {{ langStore.t.home.heroTitle }}
             </span>
           </h1>
 
-          <p class="mx-auto max-w-2xl text-sm sm:text-base lg:text-lg text-zinc-600 leading-relaxed font-normal">
+          <p class="hero-reveal hero-reveal-3 mx-auto max-w-2xl text-sm sm:text-base lg:text-lg text-zinc-500 leading-relaxed font-normal">
             {{ langStore.t.home.heroSubtitle }}
           </p>
         </div>
 
-        <!-- Base cURL Quick-Copy Bar -->
-        <div class="mx-auto max-w-xl">
-          <div class="flex items-center justify-between gap-2 rounded-2xl border border-zinc-200/90 bg-white/95 backdrop-blur-md p-1.5 sm:p-2 shadow-subtle hover:border-zinc-300 hover:shadow-elevated transition-all">
+        <!-- cURL Quick-Copy Bar — slide up -->
+        <div class="hero-reveal hero-reveal-4 mx-auto max-w-xl mb-6 sm:mb-8">
+          <div class="group flex items-center justify-between gap-2 rounded-2xl border border-zinc-200/80 bg-white/95 backdrop-blur-md p-1.5 sm:p-2 shadow-subtle hover:border-zinc-300 hover:shadow-elevated transition-all duration-300">
             <div class="flex items-center gap-2 sm:gap-2.5 pl-2 sm:pl-3 font-mono text-[11px] sm:text-xs text-zinc-700 truncate min-w-0">
               <span class="rounded bg-emerald-50 text-emerald-700 px-1.5 py-0.5 text-[10px] font-bold border border-emerald-200/60 select-none shrink-0">
                 GET
@@ -51,7 +72,7 @@
             </div>
             <button
               @click="copyQuickUrl"
-              class="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 sm:px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 active:scale-98 transition-all cursor-pointer shadow-2xs shrink-0"
+              class="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 sm:px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 active:scale-95 transition-all duration-200 cursor-pointer shadow-2xs shrink-0"
               title="Copy cURL Command"
             >
               <component :is="urlCopied ? CheckIcon : CopyIcon" class="w-3.5 h-3.5 text-emerald-400" v-if="urlCopied" />
@@ -61,79 +82,97 @@
           </div>
         </div>
 
-        <!-- Action CTAs -->
-        <div class="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-1">
+        <!-- Action CTAs — staggered pop-in -->
+        <div class="hero-reveal hero-reveal-5 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mb-8 sm:mb-10">
           <router-link
             to="/explorer"
-            class="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-zinc-800 active:scale-98 transition-all shadow-subtle hover:shadow-elevated"
+            class="group inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white hover:bg-zinc-800 active:scale-95 transition-all duration-200 shadow-subtle hover:shadow-elevated"
           >
-            <CompassIcon class="w-4 h-4 text-emerald-400" />
+            <CompassIcon class="w-4 h-4 text-emerald-400 group-hover:rotate-45 transition-transform duration-300" />
             <span>{{ langStore.t.home.exploreBtn }}</span>
           </router-link>
 
           <router-link
             to="/docs"
-            class="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 active:scale-98 transition-all shadow-2xs"
+            class="group inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-300 active:scale-95 transition-all duration-200 shadow-2xs"
           >
-            <BookOpenIcon class="w-4 h-4 text-zinc-500" />
+            <BookOpenIcon class="w-4 h-4 text-zinc-500 group-hover:text-zinc-800 transition-colors" />
             <span>{{ langStore.t.home.docsBtn }}</span>
           </router-link>
 
           <router-link
             to="/demographics"
-            class="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold text-zinc-800 hover:bg-zinc-50 active:scale-98 transition-all shadow-2xs"
+            class="group inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-zinc-800 hover:bg-zinc-50 hover:border-zinc-300 active:scale-95 transition-all duration-200 shadow-2xs"
           >
             <UsersIcon class="w-4 h-4 text-sky-600" />
             <span>{{ langStore.t.nav.demographics }}</span>
-            <span class="rounded bg-sky-100 text-sky-800 text-[10px] font-mono font-bold px-1.5 py-0.2">17.3M</span>
+            <span class="rounded bg-sky-100 text-sky-800 text-[10px] font-mono font-bold px-1.5 py-0.5 group-hover:bg-sky-200 transition-colors">17.3M</span>
           </router-link>
 
           <router-link
             to="/status"
-            class="hidden sm:inline-flex items-center gap-2 rounded-xl border border-zinc-200/80 bg-zinc-50/80 px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 active:scale-98 transition-all"
+            class="hidden sm:inline-flex items-center gap-2 rounded-xl border border-zinc-200/80 bg-zinc-50/80 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 active:scale-95 transition-all duration-200"
           >
             <ActivityIcon class="w-4 h-4 text-emerald-600" />
             <span>{{ langStore.t.nav.status }} ({{ statusStore.latencyMs }}ms)</span>
           </router-link>
         </div>
 
-        <!-- Interactive Hero Developer Console (Cool Terminal Box) -->
-        <div class="pt-2 sm:pt-4 text-left">
-          <div class="rounded-2xl border border-zinc-200/90 bg-white shadow-card overflow-hidden transition-all">
-            
-            <!-- Terminal Title Bar with Mac Dots and Tabs -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-100 bg-zinc-50/90 px-3.5 sm:px-4 py-2.5 gap-2.5">
-              
-              <!-- Left: Window Controls & Endpoint Selectors -->
-              <div class="flex items-center gap-3 overflow-x-auto no-scrollbar py-0.5">
-                <!-- Mac Traffic Light Dots -->
-                <div class="hidden sm:flex items-center gap-1.5 mr-1 shrink-0">
-                  <div class="h-2.5 w-2.5 rounded-full bg-rose-400/80"></div>
-                  <div class="h-2.5 w-2.5 rounded-full bg-amber-400/80"></div>
-                  <div class="h-2.5 w-2.5 rounded-full bg-emerald-400/80"></div>
-                </div>
+        <!-- Hero Video Showcase — cinematic floating animation -->
+        <div class="hero-reveal hero-reveal-6 relative mx-auto max-w-4xl mb-10 sm:mb-14">
+          <div class="hero-float-container relative">
+            <!-- Glassmorphic video frame -->
+            <div class="hero-video-frame rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/60 shadow-elevated bg-zinc-950">
+              <video
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="auto"
+                poster="/hero-illustration.jpg"
+                class="w-full h-auto block"
+              >
+                <source src="/gemini_generated_video_1eb6cc98.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <!-- Ambient glow beneath video -->
+            <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-4/5 h-16 bg-gradient-to-r from-emerald-400/15 via-sky-400/10 to-violet-400/10 blur-3xl rounded-full"></div>
+            <!-- Subtle side glows -->
+            <div class="absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-32 bg-emerald-400/8 blur-2xl rounded-full hidden lg:block"></div>
+            <div class="absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-32 bg-sky-400/8 blur-2xl rounded-full hidden lg:block"></div>
+          </div>
+        </div>
 
-                <!-- Endpoint Switcher Tabs -->
+        <!-- Interactive Developer Console — slide up with glow -->
+        <div class="hero-reveal hero-reveal-7 text-left">
+          <div class="rounded-2xl border border-zinc-200/90 bg-white shadow-card overflow-hidden transition-all duration-300 hover:shadow-elevated hover:border-zinc-300">
+            
+            <!-- Terminal Title Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-100 bg-zinc-50/90 px-3.5 sm:px-4 py-2.5 gap-2.5">
+              <div class="flex items-center gap-3 overflow-x-auto no-scrollbar py-0.5">
+                <div class="hidden sm:flex items-center gap-1.5 mr-1 shrink-0">
+                  <div class="h-2.5 w-2.5 rounded-full bg-rose-400/80 hover:bg-rose-500 transition-colors cursor-pointer"></div>
+                  <div class="h-2.5 w-2.5 rounded-full bg-amber-400/80 hover:bg-amber-500 transition-colors cursor-pointer"></div>
+                  <div class="h-2.5 w-2.5 rounded-full bg-emerald-400/80 hover:bg-emerald-500 transition-colors cursor-pointer"></div>
+                </div>
                 <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
                   <button
                     v-for="(ep, idx) in heroEndpoints"
                     :key="ep.id"
                     @click="activeEndpointIdx = idx"
                     :class="[
-                      'inline-flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer select-none whitespace-nowrap',
+                      'inline-flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer select-none whitespace-nowrap',
                       activeEndpointIdx === idx
-                        ? 'bg-zinc-900 text-white shadow-2xs font-bold'
+                        ? 'bg-zinc-900 text-white shadow-2xs font-bold scale-[1.02]'
                         : 'text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900'
                     ]"
                   >
                     <span class="text-xs">{{ ep.icon }}</span>
                     <span class="font-mono text-[11px]">{{ ep.title }}</span>
-                    <span class="font-battambang text-[10px] opacity-80" v-if="langStore.currentLang === 'km'">({{ ep.kmTag }})</span>
+                    <span class="font-battambang text-[10px] opacity-80" v-if="langStore.currentLang === 'km'">{{ ep.kmTag }}</span>
                   </button>
                 </div>
               </div>
-
-              <!-- Right: Live Telemetry Tag -->
               <div class="flex items-center justify-between sm:justify-end gap-2 text-xs">
                 <span class="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/60">
                   <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -142,10 +181,8 @@
               </div>
             </div>
 
-            <!-- Console Dual View: Request & Live Formatted JSON -->
+            <!-- Console Dual View -->
             <div class="grid grid-cols-1 gap-0 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-100">
-              
-              <!-- Left Column: Client Code Snippets -->
               <div class="lg:col-span-5 p-3.5 sm:p-5 space-y-3 bg-zinc-50/40">
                 <div class="flex items-center justify-between text-xs text-zinc-500">
                   <span class="font-bold uppercase tracking-wider text-zinc-800 text-[11px] flex items-center gap-1.5">
@@ -163,8 +200,6 @@
                   {{ activeHeroEndpoint.description }}
                 </p>
               </div>
-
-              <!-- Right Column: Formatted JSON Response -->
               <div class="lg:col-span-7 p-3.5 sm:p-5 space-y-3">
                 <div class="flex items-center justify-between text-xs text-zinc-500">
                   <div class="flex items-center gap-2">
