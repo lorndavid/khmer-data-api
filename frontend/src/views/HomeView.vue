@@ -152,7 +152,9 @@
           </div>
 
           <!-- Latency -->
-          <div class="gsap-stat-card col-span-2 sm:col-span-3 lg:col-span-1 space-y-1 p-2 rounded-xl hover:bg-emerald-50/60 transition-colors duration-200 flex flex-col items-center justify-center">
+          <div class="gsap-stat-card col-span-2 sm:col-span-3 lg:col-span-1 space-y-1 p-2 rounded-xl hover:bg-emerald-50/60 transition-colors duration-200 flex flex-col items-center justify-center cursor-pointer select-none"
+               :title="langStore.currentLang === 'km' ? 'ចុចដើម្បីវាស់ស្ទង់ល្បឿន Latency ផ្ទាល់ពី Server' : 'Click to measure live round-trip latency'"
+               @click="pingLiveLatency">
             <div class="whitespace-nowrap flex items-center justify-center gap-1.5 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-emerald-600 font-mono">
               <span>{{ displayLatency }}</span>
               <span class="relative flex h-2 w-2 shrink-0">
@@ -383,12 +385,24 @@ import CambodiaMap from '../components/explorer/CambodiaMap.vue';
 import ApiExplorer from '../components/explorer/ApiExplorer.vue';
 import { useStatusStore } from '../stores/status.store';
 import { useLangStore } from '../stores/lang.store';
+import { statusApi } from '../api/status.api';
+import { provincesApi } from '../api/provinces.api';
 
 const statusStore = useStatusStore();
 const langStore = useLangStore();
 const urlCopied = ref(false);
 const activeEndpointIdx = ref(0);
 const statsSectionRef = ref<HTMLElement | null>(null);
+
+// Real dynamic statistics targets fetched from API
+const statsTargets = reactive({
+  provinces: 25,
+  districts: 210,
+  communes: 1661,
+  villages: 14528,
+  population: 17.3,
+  latency: 8,
+});
 
 // Reactive statistics for scroll animation
 const statsState = reactive({
@@ -397,7 +411,7 @@ const statsState = reactive({
   communes: 0,
   villages: 0,
   population: 0,
-  latency: 50,
+  latency: 0,
   hasAnimated: false,
 });
 
@@ -436,10 +450,51 @@ const displayPopulation = computed(() => {
 
 const displayLatency = computed(() => {
   const val = Math.round(statsState.latency);
-  return `< ${val}ms`;
+  if (val <= 0) return '...';
+  return `${val}ms`;
 });
 
 let statsObserver: IntersectionObserver | null = null;
+let latencyInterval: number | null = null;
+
+async function pingLiveLatency() {
+  const start = performance.now();
+  try {
+    const res = await statusApi.getHealth();
+    const duration = res.latency_ms > 0 ? res.latency_ms : Math.max(1, Math.round(performance.now() - start));
+    statsTargets.latency = duration;
+    gsap.to(statsState, { latency: duration, duration: 0.6, ease: 'power1.out' });
+  } catch {
+    const duration = Math.max(1, Math.round(performance.now() - start));
+    statsTargets.latency = duration;
+    gsap.to(statsState, { latency: duration, duration: 0.6, ease: 'power1.out' });
+  }
+}
+
+async function fetchRealStats() {
+  try {
+    const res = await provincesApi.getStatistics();
+    if (res.success && res.data) {
+      statsTargets.provinces = res.data.province_count || 25;
+      statsTargets.districts = res.data.district_count || 210;
+      statsTargets.communes = res.data.commune_count || 1661;
+      statsTargets.villages = res.data.village_count || 14528;
+
+      if (statsState.hasAnimated) {
+        gsap.to(statsState, {
+          provinces: statsTargets.provinces,
+          districts: statsTargets.districts,
+          communes: statsTargets.communes,
+          villages: statsTargets.villages,
+          duration: 1.2,
+          ease: 'power2.out',
+        });
+      }
+    }
+  } catch (_e) {
+    // Keep default counts
+  }
+}
 
 function startStatsAnimation() {
   if (statsState.hasAnimated) return;
@@ -452,14 +507,14 @@ function startStatsAnimation() {
     { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.65, ease: 'back.out(1.4)' }
   );
 
-  // Smooth count up numbers
+  // Smooth count up numbers to live targets
   gsap.to(statsState, {
-    provinces: 25,
-    districts: 210,
-    communes: 1661,
-    villages: 14528,
-    population: 17.3,
-    latency: 8,
+    provinces: statsTargets.provinces,
+    districts: statsTargets.districts,
+    communes: statsTargets.communes,
+    villages: statsTargets.villages,
+    population: statsTargets.population,
+    latency: statsTargets.latency,
     duration: 1.8,
     ease: 'power2.out',
   });
@@ -515,11 +570,21 @@ onMounted(() => {
 
   statusStore.checkHealth();
   statusStore.fetchStatistics();
+
+  // Load real API statistics and measure live round-trip latency
+  fetchRealStats();
+  pingLiveLatency();
+
+  // Periodic live latency ping every 20 seconds
+  latencyInterval = window.setInterval(pingLiveLatency, 20000);
 });
 
 onUnmounted(() => {
   if (statsObserver) {
     statsObserver.disconnect();
+  }
+  if (latencyInterval) {
+    clearInterval(latencyInterval);
   }
 });
 

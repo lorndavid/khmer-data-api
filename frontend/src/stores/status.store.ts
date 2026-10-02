@@ -40,9 +40,9 @@ export const useStatusStore = defineStore('status', () => {
       // Fallback statistics for dev view
       statistics.value = {
         province_count: 25,
-        district_count: 204,
-        commune_count: 1652,
-        village_count: 14570,
+        district_count: 210,
+        commune_count: 1661,
+        village_count: 14528,
         postal_code_count: 1850,
         last_data_update: new Date().toISOString(),
       };
