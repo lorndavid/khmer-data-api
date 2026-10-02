@@ -1,3 +1,15 @@
+#!/bin/bash
+# ========================================================
+# KhmerAPI Production Environment Setup for David (Lorn David)
+# Domains: https://khmer.lorndavid.online & https://khmerapi.lorndavid.online
+# ========================================================
+
+TARGET_ENV=".env"
+if [ -d "/opt/khmer-api" ]; then
+  TARGET_ENV="/opt/khmer-api/.env"
+fi
+
+cat << 'EOF' > "$TARGET_ENV"
 # ========================================================
 # KhmerAPI Production Configuration
 # Developer & Owner: David (Lorn David)
@@ -38,4 +50,6 @@ CORS_ORIGINS=https://khmer.lorndavid.online,https://khmerapi.lorndavid.online,*
 # Cache & Performance
 REDIS_ENABLED=false
 LOG_LEVEL=info
+EOF
 
+echo "✅ Generated $TARGET_ENV successfully for David!"
