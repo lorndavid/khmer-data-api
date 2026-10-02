@@ -1,0 +1,92 @@
+name: khmerapi-npm
+
+services:
+  # ========================================================
+  # Container 1.1: Database Container (PostgreSQL 16)
+  # ========================================================
+  database:
+    image: postgres:16-alpine
+    container_name: khmerapi-database
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: khmerapi
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d khmerapi"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - khmerapi-net
+
+  # ========================================================
+  # Container 1.2: Backend REST API Gateway (Node.js 20)
+  # ========================================================
+  backend:
+    image: khmerapi-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: khmerapi-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      HOST: 0.0.0.0
+      DATABASE_URL: postgresql://postgres:postgrespassword@database:5432/khmerapi?schema=public
+      REDIS_ENABLED: "false"
+      JWT_SECRET: super_secret_jwt_key_khmerapi_platform_default
+      JWT_REFRESH_SECRET: super_secret_refresh_jwt_key_khmerapi_platform_default
+      CORS_ORIGINS: "*"
+      LOG_LEVEL: info
+    volumes:
+      - ./data/uploads:/app/uploads
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - khmerapi-net
+
+  # ========================================================
+  # Container 1.3: Frontend Web Application (Vue 3 + Nginx)
+  # ========================================================
+  frontend:
+    image: khmerapi-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: https://khmerapi.lorndavid.online/v1
+    container_name: khmerapi-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - khmerapi-net
+
+  # ========================================================
+  # Requirement 2: Nginx Proxy Manager (NPM GUI & Reverse Proxy)
+  # ========================================================
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: khmerapi-npm
+    restart: unless-stopped
+    ports:
+      - "80:80"     # Public HTTP Traffic
+      - "81:81"     # Web GUI Admin Dashboard (http://<VPS-IP>:81)
+      - "443:443"   # Public HTTPS SSL Traffic
+    volumes:
+      - ./data/npm/data:/data
+      - ./data/npm/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - khmerapi-net
+
+networks:
+  khmerapi-net:
+    driver: bridge
