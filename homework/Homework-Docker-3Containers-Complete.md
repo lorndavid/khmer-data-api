@@ -129,12 +129,34 @@ docker ps
 
 ---
 
-## 5. Testing & Verification
+## 5. Production Deployment Guide (Cloud VPS + Custom Domain)
 
-* **Frontend Web UI:** [http://localhost](http://localhost)
-* **REST API All Provinces:** [http://localhost/v1/provinces](http://localhost/v1/provinces)
-* **Backend Health Check:** [http://localhost:4000/health](http://localhost:4000/health)
-* **Live Cloud Domain:** [https://khmerapi.lorndavid.online](https://khmerapi.lorndavid.online)
+Deploying this containerized architecture to a live public production environment is accomplished through four key pillars:
+
+* **1. Cloud Virtual Private Server (VPS Hosting):**  
+  The application is hosted on a high-availability Ubuntu 24.04 LTS Cloud VPS with a dedicated public IPv4 address (`147.93.111.196`). A VPS provides 24/7 uptime, isolated compute resources, and runs Docker Engine natively so the containers stay alive continuously independent of any local PC.
+
+* **2. Custom Domain & DNS Mapping:**  
+  A public domain (`lorndavid.online`) with the subdomain (`khmerapi.lorndavid.online`) is linked to the server. In the DNS management console, an **A-Record** is configured pointing `khmerapi.lorndavid.online` to the VPS IP address (`147.93.111.196`). When visitors enter the URL, global DNS servers resolve it directly to the Cloud VPS.
+
+* **3. SSL/TLS Encryption & HTTPS Security:**  
+  All incoming traffic is secured using automatic SSL encryption provided by Cloudflare's global edge network. This forces HTTPS, provides DDoS mitigation, enables HTTP/2 speed improvements, and encrypts all communication between clients and the server without manual certificate renewals.
+
+* **4. Containerized Production Orchestration & Reverse Proxy:**  
+  The VPS pulls the exact 3 images from Docker Hub. The Frontend container binds to public port `80`. Internally, Nginx serves the compiled Vue 3 Single Page Application on root paths and acts as a reverse proxy forwarding all API calls from `/v1/` directly to the Backend container across the private Docker network (`khmerapi-net`).
+
+* **5. Reliability & Zero Host Dependencies:**  
+  Because all runtime dependencies (Node.js, Prisma, PostgreSQL, Nginx) are encapsulated within Docker images, the VPS host remains clean and secure. Containers run with automated restart policies (`restart: always`) ensuring instant self-healing if a service restarts.
+
+---
+
+## 6. Testing & Live Verification Links
+
+* **Local Frontend Web UI:** [http://localhost](http://localhost)
+* **Local REST API All Provinces:** [http://localhost/v1/provinces](http://localhost/v1/provinces)
+* **Local Backend Health Check:** [http://localhost:4000/health](http://localhost:4000/health)
+* **Live Production Web Application:** [https://khmerapi.lorndavid.online](https://khmerapi.lorndavid.online)
+* **Live Production REST API:** [https://khmerapi.lorndavid.online/v1/provinces](https://khmerapi.lorndavid.online/v1/provinces)
 
 > 📷 **[ SCREENSHOT PLACEHOLDER 7 ]**: Frontend Website Interface Running in Browser (`http://localhost`)
 

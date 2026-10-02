@@ -332,27 +332,65 @@ docker ps""")
     add_screenshot_placeholder(doc, "Screenshot 6: docker ps Output Showing All 3 Containers Running")
 
     # -------------------------------------------------------------
-    # 5. TESTING & VERIFICATION
+    # 5. PRODUCTION DEPLOYMENT GUIDE (CLOUD VPS + DOMAIN)
     # -------------------------------------------------------------
     p = doc.add_paragraph()
-    r = p.add_run("5. Testing & Verification")
+    r = p.add_run("5. Production Deployment Guide (Cloud VPS + Custom Domain)")
     format_run(r, bold=True, size_pt=13, color=COLOR_TITLE)
     p.paragraph_format.space_before = Pt(8)
     p.paragraph_format.space_after = Pt(2)
 
     p = doc.add_paragraph()
-    r = p.add_run("• Frontend Web UI: ")
+    r = p.add_run("Deploying this containerized architecture to a live public production environment is accomplished through four key pillars:")
+    format_run(r)
+
+    vps_concepts = [
+        ("1. Cloud Virtual Private Server (VPS Hosting):",
+         "The application is hosted on a high-availability Ubuntu 24.04 LTS Cloud VPS with a dedicated public IPv4 address (147.93.111.196). A VPS provides 24/7 uptime, isolated compute resources, and runs Docker Engine natively so the containers stay alive continuously independent of any local PC."),
+        ("2. Custom Domain & DNS Mapping:",
+         "A public domain (lorndavid.online) with the subdomain (khmerapi.lorndavid.online) is linked to the server. In the DNS management console, an 'A-Record' is configured pointing 'khmerapi.lorndavid.online' to the VPS IP address. When visitors enter the URL, global DNS servers resolve it directly to the Cloud VPS."),
+        ("3. SSL/TLS Encryption & HTTPS Security:",
+         "All incoming traffic is secured using automatic SSL encryption provided by Cloudflare's global edge network. This forces HTTPS, provides DDoS mitigation, enables HTTP/2 speed improvements, and encrypts all communication between clients and the server without manual certificate renewals."),
+        ("4. Containerized Production Orchestration & Reverse Proxy:",
+         "The VPS pulls the exact 3 images from Docker Hub. The Frontend container binds to public port 80. Internally, Nginx serves the compiled Vue 3 Single Page Application on root paths and acts as a reverse proxy forwarding all API calls from '/v1/' directly to the Backend container across the private Docker network."),
+        ("5. Reliability & Zero Host Dependencies:",
+         "Because all runtime dependencies (Node.js, Prisma, PostgreSQL, Nginx) are encapsulated within Docker images, the VPS host remains clean and secure. Containers run with automated restart policies ('restart: always') ensuring instant self-healing if a service restarts.")
+    ]
+
+    for title, desc in vps_concepts:
+        p_c = doc.add_paragraph()
+        p_c.paragraph_format.left_indent = Inches(0.2)
+        p_c.paragraph_format.space_after = Pt(2)
+        r1 = p_c.add_run(f"• {title} ")
+        format_run(r1, bold=True, color=COLOR_HEADING)
+        r2 = p_c.add_run(desc)
+        format_run(r2)
+
+    # -------------------------------------------------------------
+    # 6. TESTING & VERIFICATION
+    # -------------------------------------------------------------
+    p = doc.add_paragraph()
+    r = p.add_run("6. Testing & Live Verification Links")
+    format_run(r, bold=True, size_pt=13, color=COLOR_TITLE)
+    p.paragraph_format.space_before = Pt(8)
+    p.paragraph_format.space_after = Pt(2)
+
+    p = doc.add_paragraph()
+    r = p.add_run("• Local Frontend Web UI: ")
     format_run(r, bold=True)
     add_hyperlink(p, "http://localhost", "http://localhost")
-    r = p.add_run("\n• REST API All Provinces: ")
+    r = p.add_run("\n• Local REST API All Provinces: ")
     format_run(r, bold=True)
     add_hyperlink(p, "http://localhost/v1/provinces", "http://localhost/v1/provinces")
-    r = p.add_run("\n• Backend Health Check: ")
+    r = p.add_run("\n• Local Backend Health Check: ")
     format_run(r, bold=True)
     add_hyperlink(p, "http://localhost:4000/health", "http://localhost:4000/health")
-    r = p.add_run("\n• Live Cloud Domain: ")
+    r = p.add_run("\n• Live Production Web Application: ")
     format_run(r, bold=True)
     add_hyperlink(p, "https://khmerapi.lorndavid.online", "https://khmerapi.lorndavid.online")
+    r = p.add_run("\n• Live Production REST API: ")
+    format_run(r, bold=True)
+    add_hyperlink(p, "https://khmerapi.lorndavid.online/v1/provinces", "https://khmerapi.lorndavid.online/v1/provinces")
 
     add_screenshot_placeholder(doc, "Screenshot 7: Frontend Website Interface running on http://localhost")
     add_screenshot_placeholder(doc, "Screenshot 8: REST API JSON Response for /v1/provinces")
