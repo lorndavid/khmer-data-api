@@ -10,3 +10,8 @@ coverage
 npm-debug.log*
 tests
 README.md
+data
+data/**
+frontend
+.agents
+.gemini
