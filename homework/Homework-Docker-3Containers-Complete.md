@@ -83,32 +83,20 @@ docker pull lorndavid/khmerapi-frontend:latest
 
 ---
 
-## 4. How to Pull and Run on Any Computer / Docker Desktop
+## 4. How to Pull and Run Directly from Docker Hub (No Git)
 
-### Method A: Turnkey Execution with Docker Compose (Recommended)
-
-```bash
-# 1. Pull project and run all 3 containers
-git clone https://github.com/lorndavid/khmer-data-api.git
-cd khmer-data-api
-docker compose -f docker-compose.hub.yml up -d
-
-# 2. Check running status
-docker ps
-```
-
-### Method B: Manual Execution via Docker Network & CLI (Like Classmate Model)
+Anyone can pull all 3 containers directly from Docker Hub and run them using standard Docker commands:
 
 ```bash
-# 1. Pull all 3 images from Docker Hub
+# Step 1: Pull all 3 images directly from Docker Hub
 docker pull lorndavid/khmerapi-database:latest
 docker pull lorndavid/khmerapi-backend:latest
 docker pull lorndavid/khmerapi-frontend:latest
 
-# 2. Create isolated Docker network
+# Step 2: Create private Docker network for communication
 docker network create khmerapi-net
 
-# 3. Start Database Container
+# Step 3: Run Database Container
 docker run -d \
   --name khmerapi-database \
   --network khmerapi-net \
@@ -118,7 +106,7 @@ docker run -d \
   -p 5432:5432 \
   lorndavid/khmerapi-database:latest
 
-# 4. Start Backend API Container
+# Step 4: Run Backend REST API Container
 docker run -d \
   --name khmerapi-backend \
   --network khmerapi-net \
@@ -126,12 +114,15 @@ docker run -d \
   -e DATABASE_URL=postgresql://postgres:postgrespassword@khmerapi-database:5432/khmerapi?schema=public \
   lorndavid/khmerapi-backend:latest
 
-# 5. Start Frontend Container
+# Step 5: Run Frontend Web UI Container
 docker run -d \
   --name khmerapi-frontend \
   --network khmerapi-net \
   -p 80:80 \
   lorndavid/khmerapi-frontend:latest
+
+# Step 6: Verify all 3 containers are running
+docker ps
 ```
 
 > 📷 **[ SCREENSHOT PLACEHOLDER 6 ]**: `docker ps` Output Showing All 3 Containers Running

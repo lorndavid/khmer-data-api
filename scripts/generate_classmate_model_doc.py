@@ -264,42 +264,44 @@ docker pull lorndavid/khmerapi-frontend:latest""")
     format_run(r, bold=True)
     add_hyperlink(p, "https://hub.docker.com/u/lorndavid", "https://hub.docker.com/u/lorndavid")
 
-    add_screenshot_placeholder(doc, "Screenshot 5: Docker Hub Repositories Page (showing all 3 containers)")
+    # Embed New Real Docker Hub Screenshot
+    new_screenshot = r"C:\Users\Digital Team\.gemini\antigravity-ide\brain\81677959-0367-4e4d-8f15-ebaf60221953\.user_uploaded\media_1790974111408.png"
+    if os.path.exists(new_screenshot):
+        import shutil
+        target_img = os.path.join(os.path.dirname(output_path), "dockerhub-screenshot.png")
+        shutil.copyfile(new_screenshot, target_img)
+        p_img = doc.add_paragraph()
+        p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_img.paragraph_format.space_before = Pt(6)
+        p_img.paragraph_format.space_after = Pt(2)
+        doc.add_picture(target_img, width=Inches(6.6))
+        p_cap = doc.add_paragraph()
+        p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r_cap = p_cap.add_run("Figure 3.1: All 3 Containers Published on Docker Hub under 'lorndavid'")
+        format_run(r_cap, size_pt=9, italic=True, color=COLOR_MUTED)
 
     # -------------------------------------------------------------
-    # 4. HOW TO RUN ON ANY COMPUTER (OR DOCKER DESKTOP)
+    # 4. HOW TO PULL AND RUN FROM DOCKER HUB (NO GIT)
     # -------------------------------------------------------------
     p = doc.add_paragraph()
-    r = p.add_run("4. How to Pull and Run on Any Computer / Docker Desktop")
+    r = p.add_run("4. How to Pull and Run Directly from Docker Hub (No Git)")
     format_run(r, bold=True, size_pt=13, color=COLOR_TITLE)
     p.paragraph_format.space_before = Pt(8)
     p.paragraph_format.space_after = Pt(2)
 
     p = doc.add_paragraph()
-    r = p.add_run("Method A: Turnkey Execution with Docker Compose (Recommended)")
-    format_run(r, bold=True, color=COLOR_HEADING)
+    r = p.add_run("Anyone can pull all 3 containers directly from Docker Hub and run them using standard Docker commands:")
+    format_run(r)
 
-    add_code_box(doc, """# 1. Pull project and run all 3 containers
-git clone https://github.com/lorndavid/khmer-data-api.git
-cd khmer-data-api
-docker compose -f docker-compose.hub.yml up -d
-
-# 2. Check running status
-docker ps""")
-
-    p = doc.add_paragraph()
-    r = p.add_run("Method B: Manual Execution via Docker Network & CLI (Like Classmate Model):")
-    format_run(r, bold=True, color=COLOR_HEADING)
-
-    add_code_box(doc, """# 1. Pull all 3 images from Docker Hub
+    add_code_box(doc, """# Step 1: Pull all 3 images directly from Docker Hub
 docker pull lorndavid/khmerapi-database:latest
 docker pull lorndavid/khmerapi-backend:latest
 docker pull lorndavid/khmerapi-frontend:latest
 
-# 2. Create isolated Docker network
+# Step 2: Create private Docker network for communication
 docker network create khmerapi-net
 
-# 3. Start Database Container
+# Step 3: Run Database Container
 docker run -d \\
   --name khmerapi-database \\
   --network khmerapi-net \\
@@ -309,7 +311,7 @@ docker run -d \\
   -p 5432:5432 \\
   lorndavid/khmerapi-database:latest
 
-# 4. Start Backend API Container
+# Step 4: Run Backend REST API Container
 docker run -d \\
   --name khmerapi-backend \\
   --network khmerapi-net \\
@@ -317,12 +319,15 @@ docker run -d \\
   -e DATABASE_URL=postgresql://postgres:postgrespassword@khmerapi-database:5432/khmerapi?schema=public \\
   lorndavid/khmerapi-backend:latest
 
-# 5. Start Frontend Container
+# Step 5: Run Frontend Web UI Container
 docker run -d \\
   --name khmerapi-frontend \\
   --network khmerapi-net \\
   -p 80:80 \\
-  lorndavid/khmerapi-frontend:latest""")
+  lorndavid/khmerapi-frontend:latest
+
+# Step 6: Verify all 3 containers are running
+docker ps""")
 
     add_screenshot_placeholder(doc, "Screenshot 6: docker ps Output Showing All 3 Containers Running")
 
@@ -362,8 +367,13 @@ docker run -d \\
     r_ty = p_ty.add_run("THANK YOU")
     format_run(r_ty, font_name="Calibri", size_pt=24, bold=True, color=RGBColor(34, 139, 34))
 
-    doc.save(output_path)
-    print(f"Document successfully created at: {output_path}")
+    try:
+        doc.save(output_path)
+        print(f"Document successfully created at: {output_path}")
+    except PermissionError:
+        alt_path = output_path.replace(".docx", "-Pull.docx")
+        doc.save(alt_path)
+        print(f"File was open in Word. Saved to alternative path: {alt_path}")
 
 if __name__ == "__main__":
     out = r"d:\Developer Project\homework\Homework-Docker-3Containers-Complete.docx"
