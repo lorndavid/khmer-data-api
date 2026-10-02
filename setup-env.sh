@@ -32,9 +32,9 @@ POSTGRES_PASSWORD=DavidSecurePostgres2026!
 POSTGRES_DB=khmerapi
 DATABASE_URL=postgresql://postgres:DavidSecurePostgres2026!@database:5432/khmerapi?schema=public
 
-# Security & JWT Tokens
-JWT_SECRET=david_khmerapi_jwt_secret_prod_secure_key_2026_alpha
-JWT_REFRESH_SECRET=david_khmerapi_refresh_jwt_prod_secure_key_2026_beta
+# Security & JWT Tokens (256-bit Cryptographically Secure Keys)
+JWT_SECRET=5bd246e518e60d83e42cba6ffa20d69b6ae16da25e7819976d528e810e84075e
+JWT_REFRESH_SECRET=f8ec5b3b2a45de43816513ae172620ecb1fc3ddc16a874956cbfa4b6ff138c7e
 JWT_EXPIRES_IN=1h
 JWT_REFRESH_EXPIRES_IN=7d
 
