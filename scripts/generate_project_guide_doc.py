@@ -185,18 +185,34 @@ def create_guide_docx(output_path):
 
     # Step 2
     p = doc.add_paragraph()
-    r = p.add_run("Step 2: Create docker-compose.yml File")
+    r = p.add_run("Step 2: Get the Project (Using Git Clone / Pull - Fastest)")
     format_run(r, bold=True, size_pt=11.5, color=COLOR_HEADING)
     p.paragraph_format.space_before = Pt(6)
     p.paragraph_format.space_after = Pt(1)
 
     p = doc.add_paragraph()
-    r = p.add_run("Create a new folder on your computer (e.g. C:\\khmerapi) and create a file named ")
+    r = p.add_run("Open PowerShell or Command Prompt on your computer and run:")
     format_run(r)
-    r2 = p.add_run("docker-compose.yml")
-    format_run(r2, bold=True)
-    r3 = p.add_run(" with the following content:")
-    format_run(r3)
+
+    add_code_box(doc, """# 1. Clone the project from GitHub
+git clone https://github.com/lorndavid/khmer-data-api.git
+cd khmer-data-api
+
+# (If you already downloaded it previously, just pull the latest version):
+git pull
+
+# 2. Run all 3 containers with a single command:
+docker compose -f docker-compose.hub.yml up -d""")
+
+    p = doc.add_paragraph()
+    r = p.add_run("Alternative (Without Git): ")
+    format_run(r, bold=True)
+    r2 = p.add_run("If you don't have Git installed, you can simply save this single ")
+    format_run(r2)
+    r3 = p.add_run("docker-compose.yml")
+    format_run(r3, bold=True)
+    r4 = p.add_run(" file and run `docker compose up -d`:")
+    format_run(r4)
 
     add_code_box(doc, """name: khmerapi
 
@@ -331,8 +347,13 @@ docker compose up -d""")
     format_run(r, bold=True)
     add_hyperlink(p_c, "https://hub.docker.com/u/lorndavid", "https://hub.docker.com/u/lorndavid")
 
-    doc.save(output_path)
-    print(f"Guide successfully generated at: {output_path}")
+    try:
+        doc.save(output_path)
+        print(f"Guide successfully generated at: {output_path}")
+    except PermissionError:
+        alt_path = output_path.replace(".docx", "-V2.docx")
+        doc.save(alt_path)
+        print(f"File was open in Word. Saved to alternative path: {alt_path}")
 
 if __name__ == "__main__":
     out = r"d:\Developer Project\homework\Project-Overview-and-Windows-Docker-Guide.docx"

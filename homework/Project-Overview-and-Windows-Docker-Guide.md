@@ -67,11 +67,32 @@ You do **not** need to install Node.js, Python, or Git. You only need **Docker D
 
 ---
 
-### Step 2: Create Your Project Folder & `docker-compose.yml`
+### Step 2: Get the Project Files
 
-1. Create a new folder on your computer (for example: `C:\khmerapi` or on your Desktop).
-2. Inside that folder, create a new text file named **`docker-compose.yml`**.
-3. Paste the following configuration into **`docker-compose.yml`** and save:
+You have **two easy ways** to get the project files on your computer:
+
+#### ⚡ Method 1: Using Git Clone & Git Pull (Fastest & Recommended)
+If you have Git installed, open PowerShell or Command Prompt and run:
+
+```bash
+# 1. Clone the project from GitHub
+git clone https://github.com/lorndavid/khmer-data-api.git
+cd khmer-data-api
+
+# If you already cloned it before, just pull the latest updates:
+git pull
+
+# 2. Run the 3 containers directly:
+docker compose -f docker-compose.hub.yml up -d
+```
+
+---
+
+#### 📁 Method 2: Without Git (Single `docker-compose.yml` File)
+If you don't have Git installed:
+1. Create a new folder on your computer (e.g. `C:\khmerapi`).
+2. Inside that folder, create a file named **`docker-compose.yml`**.
+3. Copy-paste this content and save:
 
 ```yaml
 name: khmerapi
