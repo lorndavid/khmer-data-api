@@ -106,9 +106,9 @@ Your teacher does **NOT** need to install Node.js, clone the full repo, or build
    docker compose -f docker-compose.hub.yml up -d
    ```
 3. Docker Desktop will automatically pull:
-   * `postgres:16-alpine`
-   * `<your-dockerhub-username>/khmerapi-backend:latest`
-   * `<your-dockerhub-username>/khmerapi-frontend:latest`
+   * `lorndavid/khmerapi-database:latest`
+   * `lorndavid/khmerapi-backend:latest`
+   * `lorndavid/khmerapi-frontend:latest`
 4. The database automatically initializes and imports all 25 provinces, 210 districts, 1,661 communes, and 14,528 villages!
 5. Open browser on Docker Desktop:
    * **Web App UI**: [http://localhost](http://localhost)

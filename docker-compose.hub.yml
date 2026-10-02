@@ -5,7 +5,7 @@ services:
   # 1. Database Container (PostgreSQL 16)
   # ========================================================
   database:
-    image: postgres:16-alpine
+    image: ${DOCKERHUB_USER:-lorndavid}/khmerapi-database:latest
     container_name: khmerapi-database
     restart: unless-stopped
     environment:
