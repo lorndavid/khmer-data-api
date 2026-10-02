@@ -7,7 +7,7 @@
           <MethodBadge :method="method" />
           <div class="flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1">
             <span class="font-mono text-xs sm:text-sm font-bold text-zinc-900">
-              {{ endpoint }}
+              {{ cleanEndpoint }}
             </span>
             <button
               @click="copyEndpoint"
@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import {
   Play as PlayIcon,
   Loader2 as Loader2Icon,
@@ -163,8 +163,12 @@ const liveStatusCode = ref<number | null>(null);
 const liveLatency = ref<number | null>(null);
 const copiedEndpoint = ref(false);
 
+const cleanEndpoint = computed(() => {
+  return props.endpoint.replace(/^\/api\/v1/, '/v1');
+});
+
 function copyEndpoint() {
-  navigator.clipboard.writeText(props.endpoint);
+  navigator.clipboard.writeText(cleanEndpoint.value);
   copiedEndpoint.value = true;
   setTimeout(() => {
     copiedEndpoint.value = false;

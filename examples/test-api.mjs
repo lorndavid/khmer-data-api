@@ -1,9 +1,9 @@
 // ========================================================
 // KhmerAPI — Official JavaScript / Node.js Test Script
-// Live Endpoint: https://khmerapi.lorndavid.online/api/v1
+// Live Endpoint: https://khmerapi.lorndavid.online/v1
 // ========================================================
 
-const API_BASE = process.env.API_BASE_URL || 'https://khmerapi.lorndavid.online/api/v1';
+const API_BASE = process.env.API_BASE_URL || 'https://khmerapi.lorndavid.online/v1';
 
 async function runTests() {
   console.log('🚀 Testing KhmerAPI in JavaScript');

@@ -832,7 +832,7 @@ function getFeaturePcode(feat: any): string {
 function getFeatureApiUrl(feat: any): string {
   const pcode = getFeaturePcode(feat);
   const cleanCode = pcode.replace('KH', '');
-  return `/api/v1/locations/${cleanCode || '12'}`;
+  return `/v1/locations/${cleanCode || '12'}`;
 }
 
 async function copyFeatureGeoJson() {

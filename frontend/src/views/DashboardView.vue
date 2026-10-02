@@ -415,9 +415,9 @@ const firstKeyPrefix = computed(() => {
 const quickstartSnippets = computed(() => {
   const key = firstKeyPrefix.value || 'kh_live_your_key_here';
   return {
-    curl: `curl -X GET "https://khmerapi.lorndavid.online/api/v1/provinces?limit=5" \\\n  -H "X-API-Key: ${key}"`,
-    js: `const response = await fetch("https://khmerapi.lorndavid.online/api/v1/provinces?limit=5", {\n  headers: {\n    "X-API-Key": "${key}"\n  }\n});\nconst result = await response.json();\nconsole.log(result.data);`,
-    python: `import requests\n\nheaders = {"X-API-Key": "${key}"}\nres = requests.get("https://khmerapi.lorndavid.online/api/v1/provinces?limit=5", headers=headers)\nprint(res.json()["data"])`,
+    curl: `curl -X GET "https://khmerapi.lorndavid.online/v1/provinces?limit=5" \\\n  -H "X-API-Key: ${key}"`,
+    js: `const response = await fetch("https://khmerapi.lorndavid.online/v1/provinces?limit=5", {\n  headers: {\n    "X-API-Key": "${key}"\n  }\n});\nconst result = await response.json();\nconsole.log(result.data);`,
+    python: `import requests\n\nheaders = {"X-API-Key": "${key}"}\nres = requests.get("https://khmerapi.lorndavid.online/v1/provinces?limit=5", headers=headers)\nprint(res.json()["data"])`,
     php: `<?php\n$headers = ["X-API-Key: ${key}"];\n// cURL request...`
   };
 });

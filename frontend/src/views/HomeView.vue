@@ -650,7 +650,7 @@ const activeHeroEndpoint = computed(() => heroEndpoints[activeEndpointIdx.value]
 
 async function copyQuickUrl() {
   try {
-    const fullCmd = `curl -X GET "https://khmerapi.lorndavid.online/api/v1/${activeHeroEndpoint.value.path}" -H "Accept: application/json"`;
+    const fullCmd = `curl -X GET "https://khmerapi.lorndavid.online/v1/${activeHeroEndpoint.value.path}" -H "Accept: application/json"`;
     await navigator.clipboard.writeText(fullCmd);
     urlCopied.value = true;
     setTimeout(() => {

@@ -28,9 +28,9 @@
               <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-900">{{ langStore.t.docs.baseUrlTitle }}</h3>
               <span class="rounded bg-emerald-100 text-emerald-800 text-[10px] font-sans font-bold px-2 py-0.5">{{ langStore.t.docs.httpsRequired }}</span>
             </div>
-            <p class="text-xs text-zinc-600">{{ langStore.t.docs.baseUrlDesc }} <code class="font-mono text-zinc-800 bg-zinc-100 px-1 py-0.5 rounded">/api/v1</code> :</p>
+            <p class="text-xs text-zinc-600">{{ langStore.t.docs.baseUrlDesc }} <code class="font-mono text-zinc-800 bg-zinc-100 px-1 py-0.5 rounded">/v1</code> :</p>
             <div class="flex items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 px-3.5 py-2.5 font-mono text-xs text-zinc-900">
-              <span class="font-bold select-all">https://khmerapi.lorndavid.online/api/v1</span>
+              <span class="font-bold select-all">https://khmerapi.lorndavid.online/v1</span>
               <button
                 @click="copyBaseUrl"
                 class="inline-flex items-center gap-1 rounded bg-white border border-zinc-200 px-2 py-1 text-[11px] font-sans font-medium text-zinc-700 hover:bg-zinc-50 transition-colors shadow-2xs cursor-pointer"
@@ -591,7 +591,7 @@ const activeSectionId = ref('getting-started');
 const copiedBaseUrl = ref(false);
 
 function copyBaseUrl() {
-  navigator.clipboard.writeText('https://khmerapi.lorndavid.online/api/v1');
+  navigator.clipboard.writeText('https://khmerapi.lorndavid.online/v1');
   copiedBaseUrl.value = true;
   setTimeout(() => {
     copiedBaseUrl.value = false;

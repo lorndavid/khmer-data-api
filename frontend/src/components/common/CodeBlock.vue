@@ -71,8 +71,10 @@ const selectedLang = ref<'curl' | 'js' | 'python' | 'dart' | 'php' | 'go'>('curl
 const copied = ref(false);
 
 const fullUrl = computed(() => {
-  const base = 'https://khmerapi.lorndavid.online/api/v1';
-  let url = `${base}${props.endpoint.startsWith('/') ? '' : '/'}${props.endpoint}`;
+  const base = 'https://khmerapi.lorndavid.online/v1';
+  // Clean endpoint: strip any leading /api/v1, /v1, /api, or duplicate slashes
+  const cleanEndpoint = props.endpoint.replace(/^(\/?api)?\/v1\/?/, '').replace(/^\//, '');
+  let url = `${base}/${cleanEndpoint}`;
   if (props.queryParams && Object.keys(props.queryParams).length > 0) {
     const params = new URLSearchParams();
     for (const [k, v] of Object.entries(props.queryParams)) {

@@ -72,7 +72,7 @@
           <h2 class="text-sm font-bold text-zinc-900">{{ langStore.t.status.livePingsTitle }}</h2>
           <p class="text-xs text-zinc-500">{{ langStore.t.status.livePingsDesc }}</p>
         </div>
-        <span class="text-xs font-mono text-zinc-400">Target: /api/v1</span>
+        <span class="text-xs font-mono text-zinc-400">Target: /v1</span>
       </div>
 
       <div class="divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white shadow-2xs overflow-hidden">
@@ -271,15 +271,15 @@ interface EndpointBenchmark {
 }
 
 const benchmarkEndpoints = ref<EndpointBenchmark[]>([
-  { method: 'GET', path: '/api/v1/provinces', description: 'List all 25 provinces', latency: 8, status: 200 },
-  { method: 'GET', path: '/api/v1/provinces/12', description: 'Fetch Phnom Penh capital', latency: 6, status: 200 },
-  { method: 'GET', path: '/api/v1/districts?province_code=12', description: 'Fetch Khan in Phnom Penh', latency: 9, status: 200 },
-  { method: 'GET', path: '/api/v1/communes?district_code=1201', description: 'Fetch Sangkat in Chamkar Mon', latency: 7, status: 200 },
-  { method: 'GET', path: '/api/v1/villages?commune_code=120101', description: 'Fetch Villages in Tonle Bassac', latency: 8, status: 200 },
-  { method: 'GET', path: '/api/v1/search?q=Siem%20Reap', description: 'Bilingual full-text search', latency: 12, status: 200 },
-  { method: 'GET', path: '/api/v1/locations/12010101', description: 'Complete 4-tier tree lookup', latency: 10, status: 200 },
-  { method: 'GET', path: '/api/v1/geo/provinces', description: 'GeoJSON boundary geometries', latency: 14, status: 200 },
-  { method: 'GET', path: '/api/v1/statistics', description: 'Live database records metadata', latency: 5, status: 200 },
+  { method: 'GET', path: '/v1/provinces', description: 'List all 25 provinces', latency: 8, status: 200 },
+  { method: 'GET', path: '/v1/provinces/12', description: 'Fetch Phnom Penh capital', latency: 6, status: 200 },
+  { method: 'GET', path: '/v1/districts?province_code=12', description: 'Fetch Khan in Phnom Penh', latency: 9, status: 200 },
+  { method: 'GET', path: '/v1/communes?district_code=1201', description: 'Fetch Sangkat in Chamkar Mon', latency: 7, status: 200 },
+  { method: 'GET', path: '/v1/villages?commune_code=120101', description: 'Fetch Villages in Tonle Bassac', latency: 8, status: 200 },
+  { method: 'GET', path: '/v1/search?q=Siem%20Reap', description: 'Bilingual full-text search', latency: 12, status: 200 },
+  { method: 'GET', path: '/v1/locations/12010101', description: 'Complete 4-tier tree lookup', latency: 10, status: 200 },
+  { method: 'GET', path: '/v1/geo/provinces', description: 'GeoJSON boundary geometries', latency: 14, status: 200 },
+  { method: 'GET', path: '/v1/statistics', description: 'Live database records metadata', latency: 5, status: 200 },
 ]);
 
 const avgLatency = computed(() => {

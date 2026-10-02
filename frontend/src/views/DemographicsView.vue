@@ -239,7 +239,7 @@
           <div class="space-y-1">
             <div class="flex items-center justify-between">
               <span class="rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-mono font-bold text-emerald-700 border border-emerald-200">
-                GET /api/v1/demographics/population
+                GET /v1/demographics/population
               </span>
               <span v-if="latencyMs" class="font-mono text-[10px] text-emerald-600 font-bold">
                 {{ latencyMs }}ms
@@ -283,7 +283,7 @@
             Client Integration
           </div>
           <CodeBlock
-            endpoint="/api/v1/demographics/population"
+            endpoint="demographics/population"
             method="GET"
           />
         </div>

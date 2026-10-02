@@ -20,7 +20,7 @@
         <div class="sm:col-span-7">
           <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1.5">Endpoint URL</label>
           <div class="flex items-center rounded-lg border border-zinc-200 bg-zinc-50/70 px-3 py-1.5 focus-within:border-zinc-900 focus-within:bg-white">
-            <span class="font-mono text-xs text-zinc-400 select-none mr-1">/api/v1</span>
+            <span class="font-mono text-xs text-zinc-400 select-none mr-1">/v1</span>
             <input
               v-model="endpointPath"
               type="text"
@@ -243,7 +243,7 @@ const fullExecutedUrl = computed(() => {
     }
   }
   const qs = searchParams.toString();
-  return `/api/v1${p}${qs ? `?${qs}` : ''}`;
+  return `/v1${p}${qs ? `?${qs}` : ''}`;
 });
 
 function applyPreset() {
@@ -311,7 +311,7 @@ async function executeRequest() {
 
 onMounted(() => {
   if (route.query.endpoint) {
-    endpointPath.value = String(route.query.endpoint).replace('/api/v1', '');
+    endpointPath.value = String(route.query.endpoint).replace(/^(\/api)?\/v1/, '');
     executeRequest();
   }
 });
