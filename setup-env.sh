@@ -28,9 +28,9 @@ VITE_API_BASE_URL=https://khmerapi.lorndavid.online/api/v1
 
 # Database Configuration (PostgreSQL 16 in Docker)
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=DavidSecurePostgres2026!
+POSTGRES_PASSWORD=postgrespassword
 POSTGRES_DB=khmerapi
-DATABASE_URL=postgresql://postgres:DavidSecurePostgres2026!@database:5432/khmerapi?schema=public
+DATABASE_URL=postgresql://postgres:postgrespassword@database:5432/khmerapi?schema=public
 
 # Security & JWT Tokens (256-bit Cryptographically Secure Keys)
 JWT_SECRET=5bd246e518e60d83e42cba6ffa20d69b6ae16da25e7819976d528e810e84075e
