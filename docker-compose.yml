@@ -52,6 +52,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://khmerapi.lorndavid.online/api/v1}
     container_name: khmerapi-frontend
     restart: unless-stopped
     ports:
