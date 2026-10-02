@@ -15,7 +15,7 @@ export class ProvincesService {
     const { page, limit, skip, take, sort, order } = parsePagination(
       {
         page: query.page,
-        limit: query.limit,
+        limit: query.limit ?? 25,
         sort: query.sort,
         order: query.order as 'asc' | 'desc',
       },

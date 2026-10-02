@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const listProvincesQuerySchema = z.object({
   page: z.coerce.number().int().min(1).optional(),
-  limit: z.coerce.number().int().min(1).max(100).optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(25).optional(),
   search: z.string().max(100).optional(),
   sort: z.enum(['name_en', 'name_km', 'code', 'created_at', 'updated_at']).optional(),
   order: z.enum(['asc', 'desc', 'ASC', 'DESC']).optional(),
