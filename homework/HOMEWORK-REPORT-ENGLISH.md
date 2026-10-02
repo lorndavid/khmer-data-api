@@ -159,14 +159,14 @@ docker compose up -d
 
 ---
 
-## 4. Cloud Hosting on Free VPS & Domain with Nginx Proxy Manager
+## 4. Cloud Hosting on Free VPS & Free Domain (3 Containers)
 
 * **Cloud VPS:** Ubuntu 24.04 LTS Server (`147.93.111.196`)
-* **Nginx Proxy Manager:** Running via Docker (`jc21/nginx-proxy-manager`) on port `81` with automatic Let's Encrypt SSL certificates.
-* **Reverse Proxy:** Forwards traffic from the domain to the `frontend:80` container.
+* **Architecture:** Running the 3 containers (`database`, `backend`, `frontend`) directly in production with Docker.
+* **Custom Domain & SSL:** Configured DNS A-Records to point directly to the VPS with automatic HTTPS encryption.
 
 ### Clickable Live Domain Links:
-* 🌐 **Live Web Application:** [https://khmerapi.lorndavid.online](https://khmerapi.lorndavid.online)
+* 🌐 **Live Web Application:** [https://khmerapi.lorndavid.online](https://khmerapi.lorndavid.online) (or [https://khmer.lorndavid.online](https://khmer.lorndavid.online))
 * 📡 **Live REST API Endpoint:** [https://khmerapi.lorndavid.online/v1/provinces](https://khmerapi.lorndavid.online/v1/provinces)
 * 🩺 **Live API Health Status:** [https://khmerapi.lorndavid.online/health](https://khmerapi.lorndavid.online/health)
 

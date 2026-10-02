@@ -350,10 +350,10 @@ volumes:
     format_run(r3)
 
     # -------------------------------------------------------------
-    # SECTION 4: FREE DOMAIN & FREE VPS WITH NGINX PROXY MANAGER
+    # SECTION 4: CLOUD HOSTING ON VPS WITH CUSTOM DOMAIN
     # -------------------------------------------------------------
     p = doc.add_paragraph()
-    r = p.add_run("4. Cloud Hosting on Free VPS & Domain with Nginx Proxy Manager")
+    r = p.add_run("4. Cloud Hosting on Free VPS & Free Domain (3 Containers)")
     format_run(r, bold=True, size_pt=13, color=COLOR_TITLE)
     p.paragraph_format.space_before = Pt(8)
     p.paragraph_format.space_after = Pt(2)
@@ -363,13 +363,13 @@ volumes:
     format_run(r, bold=True)
     r = p.add_run("Ubuntu 24.04 LTS Server (IP: 147.93.111.196)\n")
     format_run(r)
-    r = p.add_run("• Nginx Proxy Manager: ")
+    r = p.add_run("• Architecture: ")
     format_run(r, bold=True)
-    r = p.add_run("Deployed via Docker container (`jc21/nginx-proxy-manager`) on port 81 with automated Let's Encrypt SSL.\n")
+    r = p.add_run("Running the 3 containers (Database, Backend, Frontend) directly in production with Docker.\n")
     format_run(r)
-    r = p.add_run("• Reverse Proxy Routing: ")
+    r = p.add_run("• Custom Domain & SSL: ")
     format_run(r, bold=True)
-    r = p.add_run("Forwards public HTTPS requests to the `khmerapi-frontend:80` container.")
+    r = p.add_run("Configured DNS A-Records to point directly to the VPS with automatic HTTPS encryption.")
     format_run(r)
 
     p_live = doc.add_paragraph()
@@ -379,7 +379,10 @@ volumes:
     r = p_live.add_run("  🌐 Live Web Application: ")
     format_run(r)
     add_hyperlink(p_live, "https://khmerapi.lorndavid.online", "https://khmerapi.lorndavid.online")
-    r = p_live.add_run("\n  📡 Live REST API Endpoint: ")
+    r = p_live.add_run(" (or ")
+    format_run(r)
+    add_hyperlink(p_live, "https://khmer.lorndavid.online", "https://khmer.lorndavid.online")
+    r = p_live.add_run(")\n  📡 Live REST API Endpoint: ")
     format_run(r)
     add_hyperlink(p_live, "https://khmerapi.lorndavid.online/v1/provinces", "https://khmerapi.lorndavid.online/v1/provinces")
     r = p_live.add_run("\n  🩺 Live API Health Status: ")
