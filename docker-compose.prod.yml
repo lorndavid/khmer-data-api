@@ -72,3 +72,15 @@ services:
           cpus: '1'
           memory: 512M
 
+  # 4. Cloudflare Tunnel (Zero Public IP needed)
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: khmerapi-tunnel-prod
+    restart: always
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    profiles:
+      - tunnel
+    depends_on:
+      - backend
+
+

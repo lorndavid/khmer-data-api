@@ -58,3 +58,14 @@ services:
       - "80:80"
     depends_on:
       - backend
+
+  # 4. Cloudflare Tunnel (Zero Public IP needed)
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: khmerapi-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    profiles:
+      - tunnel
+    depends_on:
+      - backend
