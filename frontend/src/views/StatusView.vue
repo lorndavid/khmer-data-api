@@ -96,15 +96,20 @@
             <div class="w-24 sm:w-32 bg-zinc-100 rounded-full h-2 overflow-hidden flex items-center">
               <div
                 class="h-full rounded-full transition-all duration-500"
-                :class="ep.latency < 25 ? 'bg-emerald-500' : ep.latency < 100 ? 'bg-amber-500' : 'bg-rose-500'"
-                :style="{ width: Math.min(100, Math.max(10, ep.latency * 2)) + '%' }"
+                :class="ep.latency < 100 ? 'bg-emerald-500' : ep.latency < 300 ? 'bg-emerald-600' : ep.latency < 600 ? 'bg-amber-500' : 'bg-rose-500'"
+                :style="{ width: Math.min(100, Math.max(12, Math.round(ep.latency / 4))) + '%' }"
               ></div>
             </div>
 
             <!-- Latency text -->
-            <span class="font-mono text-xs font-bold text-zinc-800 w-14 text-right">
-              {{ ep.latency !== null ? ep.latency + ' ms' : '...' }}
-            </span>
+            <div class="w-20 text-right">
+              <div class="font-mono text-xs font-bold text-zinc-800">
+                {{ ep.latency !== null ? ep.latency + ' ms' : '...' }}
+              </div>
+              <div v-if="ep.serverTime" class="font-mono text-[9px] text-zinc-400">
+                core: {{ ep.serverTime }}
+              </div>
+            </div>
 
             <!-- Status Pill -->
             <span
@@ -267,6 +272,7 @@ interface EndpointBenchmark {
   path: string;
   description: string;
   latency: number;
+  serverTime?: string | null;
   status: number;
 }
 
@@ -296,9 +302,11 @@ async function runAllLatencyBenchmarks() {
     try {
       const res = await axios.get(ep.path, { timeout: 4000 });
       ep.latency = Math.max(1, Math.round(performance.now() - start));
+      ep.serverTime = (res.headers['x-response-time'] as string) || null;
       ep.status = res.status;
     } catch (err: any) {
       ep.latency = Math.max(1, Math.round(performance.now() - start));
+      ep.serverTime = null;
       ep.status = err.response ? err.response.status : 500;
     }
   }

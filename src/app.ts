@@ -4,6 +4,7 @@ import cors from 'cors';
 import compression from 'compression';
 import { env } from './config/env.js';
 import { requestIdMiddleware } from './common/middleware/request-id.middleware.js';
+import { responseTimeMiddleware } from './common/middleware/response-time.middleware.js';
 import { errorHandlerMiddleware } from './common/middleware/error-handler.middleware.js';
 import { notFoundMiddleware } from './common/middleware/not-found.middleware.js';
 import { healthRoutes } from './modules/health/health.routes.js';
@@ -58,6 +59,7 @@ export function createApp(): Express {
       ],
       exposedHeaders: [
         'X-Request-ID',
+        'X-Response-Time',
         'X-RateLimit-Limit',
         'X-RateLimit-Remaining',
         'X-RateLimit-Reset',
@@ -65,6 +67,9 @@ export function createApp(): Express {
       ],
     }),
   );
+
+  // Measure backend internal processing time
+  app.use(responseTimeMiddleware());
 
   // Compression
   app.use(compression());

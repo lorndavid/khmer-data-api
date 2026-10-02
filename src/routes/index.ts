@@ -26,6 +26,14 @@ apiV1Router.use(optionalApiKey);
 apiV1Router.use(rateLimiterMiddleware());
 apiV1Router.use(usageLoggerMiddleware());
 
+// Enable Cloudflare Edge & Browser Caching for public GET queries
+apiV1Router.use((req, res, next) => {
+  if (req.method === 'GET' && !req.headers.authorization && !req.headers['x-api-key']) {
+    res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
+  }
+  next();
+});
+
 // Root index for /api/v1 - API Discovery & Catalog
 apiV1Router.get('/', (req, res) => {
   res.json({
