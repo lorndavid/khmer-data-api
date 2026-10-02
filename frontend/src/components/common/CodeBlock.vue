@@ -71,7 +71,7 @@ const selectedLang = ref<'curl' | 'js' | 'python' | 'dart' | 'php' | 'go'>('curl
 const copied = ref(false);
 
 const fullUrl = computed(() => {
-  const base = 'https://api.khmerapi.dev/api/v1';
+  const base = 'https://khmerapi.lorndavid.online/api/v1';
   let url = `${base}${props.endpoint.startsWith('/') ? '' : '/'}${props.endpoint}`;
   if (props.queryParams && Object.keys(props.queryParams).length > 0) {
     const params = new URLSearchParams();

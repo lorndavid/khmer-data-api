@@ -36,7 +36,9 @@ Thumbs.db
 *.swp
 *.swo
 
-# Docker
+# Docker & Local Data Storage
 docker-data/
+data/
+postgres_data/
 postgres-data/
 redis-data/

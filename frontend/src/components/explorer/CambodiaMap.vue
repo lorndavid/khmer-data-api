@@ -466,6 +466,7 @@ function initMap() {
     zoomControl: false,
     minZoom: 6,
     maxZoom: 18,
+    keyboard: false,
   });
 
   villageMarkersGroup = L.layerGroup().addTo(map);
@@ -849,7 +850,7 @@ async function copyFeatureGeoJson() {
 
 async function copyText(text: string, type: 'api') {
   try {
-    await navigator.clipboard.writeText(`https://api.khmerapi.dev${text}`);
+    await navigator.clipboard.writeText(`https://khmerapi.lorndavid.online${text}`);
     if (type === 'api') {
       copiedApi.value = true;
       setTimeout(() => {

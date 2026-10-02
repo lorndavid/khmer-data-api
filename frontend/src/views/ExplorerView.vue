@@ -402,7 +402,7 @@ async function selectCommune(c: any) {
 async function copyLocationTreeApi() {
   if (selectedCommune.value) {
     try {
-      await navigator.clipboard.writeText(`https://api.khmerapi.dev/api/v1/locations/${selectedCommune.value.code}`);
+      await navigator.clipboard.writeText(`https://khmerapi.lorndavid.online/api/v1/locations/${selectedCommune.value.code}`);
       treeCopied.value = true;
       setTimeout(() => {
         treeCopied.value = false;

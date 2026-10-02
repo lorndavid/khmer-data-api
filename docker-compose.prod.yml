@@ -1,15 +1,15 @@
 services:
   # 1. PostgreSQL Database
-  postgres:
+  database:
     image: postgres:16-alpine
-    container_name: khmerapi-postgres-prod
+    container_name: khmerapi-database-prod
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespassword}
       POSTGRES_DB: ${POSTGRES_DB:-khmerapi}
     volumes:
-      - postgres-prod-data:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-khmerapi}"]
       interval: 10s
@@ -22,27 +22,29 @@ services:
           memory: 2048M
 
   # 2. Node.js Express REST API
-  api:
+  backend:
     image: ${DOCKER_IMAGE_API:-khmerapi/backend:latest}
     build:
       context: .
       dockerfile: Dockerfile.backend
-    container_name: khmerapi-gateway-prod
+    container_name: khmerapi-backend-prod
     restart: always
     ports:
       - "${PORT:-4000}:4000"
+    volumes:
+      - ./data/uploads:/app/uploads
     environment:
       NODE_ENV: production
       PORT: 4000
       HOST: 0.0.0.0
-      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgrespassword@postgres:5432/khmerapi?schema=public}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgrespassword@database:5432/khmerapi?schema=public}
       REDIS_ENABLED: "false"
       JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_key_khmerapi_platform_default}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-super_secret_refresh_jwt_key_khmerapi_platform_default}
       CORS_ORIGINS: ${CORS_ORIGINS:-*}
       LOG_LEVEL: ${LOG_LEVEL:-info}
     depends_on:
-      postgres:
+      database:
         condition: service_healthy
     deploy:
       replicas: 1
@@ -62,7 +64,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - api
+      - backend
     deploy:
       replicas: 1
       resources:
@@ -70,5 +72,3 @@ services:
           cpus: '1'
           memory: 512M
 
-volumes:
-  postgres-prod-data:

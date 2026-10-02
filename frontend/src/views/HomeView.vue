@@ -93,90 +93,6 @@
           </div>
         </div>
 
-        <!-- Interactive Developer Console — slide up with glow -->
-        <div class="gsap-hero-console text-left">
-          <div class="rounded-2xl border border-zinc-200/90 bg-white shadow-card overflow-hidden transition-all duration-300 hover:shadow-elevated hover:border-zinc-300">
-            
-            <!-- Terminal Title Bar -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-100 bg-zinc-50/90 px-3.5 sm:px-4 py-2.5 gap-2.5">
-              <div class="flex items-center gap-3 overflow-x-auto no-scrollbar py-0.5">
-                <div class="hidden sm:flex items-center gap-1.5 mr-1 shrink-0">
-                  <div class="h-2.5 w-2.5 rounded-full bg-rose-400/80 hover:bg-rose-500 transition-colors cursor-pointer"></div>
-                  <div class="h-2.5 w-2.5 rounded-full bg-amber-400/80 hover:bg-amber-500 transition-colors cursor-pointer"></div>
-                  <div class="h-2.5 w-2.5 rounded-full bg-emerald-400/80 hover:bg-emerald-500 transition-colors cursor-pointer"></div>
-                </div>
-                <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-                  <button
-                    v-for="(ep, idx) in heroEndpoints"
-                    :key="ep.id"
-                    @click="activeEndpointIdx = idx"
-                    :class="[
-                      'inline-flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer select-none whitespace-nowrap',
-                      activeEndpointIdx === idx
-                        ? 'bg-zinc-900 text-white shadow-2xs font-bold scale-[1.02]'
-                        : 'text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900'
-                    ]"
-                  >
-                    <component :is="ep.icon" class="w-3.5 h-3.5 shrink-0" />
-                    <span class="font-mono text-[11px]">{{ ep.title }}</span>
-                    <span class="font-battambang text-[10px] opacity-80" v-if="langStore.currentLang === 'km'">{{ ep.kmTag }}</span>
-                  </button>
-                </div>
-              </div>
-              <div class="flex items-center justify-between sm:justify-end gap-2 text-xs">
-                <span class="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/60">
-                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span>HTTP 200 • {{ statusStore.latencyMs }}ms</span>
-                </span>
-              </div>
-            </div>
-
-            <!-- Console Dual View -->
-            <div class="grid grid-cols-1 gap-0 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-100">
-              <div class="lg:col-span-5 p-3.5 sm:p-5 space-y-3 bg-zinc-50/40">
-                <div class="flex items-center justify-between text-xs text-zinc-500">
-                  <span class="font-bold uppercase tracking-wider text-zinc-800 text-[11px] flex items-center gap-1.5">
-                    <ZapIcon class="w-3.5 h-3.5 text-amber-500" />
-                    <span>Client Code</span>
-                  </span>
-                  <span class="font-mono text-[11px] text-zinc-400">cURL, JS, Py, Dart, Go</span>
-                </div>
-                <CodeBlock
-                  :endpoint="activeHeroEndpoint.endpoint"
-                  :method="'GET'"
-                  :queryParams="activeHeroEndpoint.queryParams"
-                />
-                <p class="text-[11.5px] text-zinc-500 leading-relaxed font-normal">
-                  {{ activeHeroEndpoint.description }}
-                </p>
-              </div>
-              <div class="lg:col-span-7 p-3.5 sm:p-5 space-y-3">
-                <div class="flex items-center justify-between text-xs text-zinc-500">
-                  <div class="flex items-center gap-2">
-                    <span class="font-bold uppercase tracking-wider text-zinc-800 text-[11px] flex items-center gap-1.5">
-                      <FileCodeIcon class="w-3.5 h-3.5 text-zinc-500" />
-                      <span>Live JSON Output</span>
-                    </span>
-                  </div>
-                  <span class="font-mono text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
-                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                    Verified 2025 Standard
-                  </span>
-                </div>
-                <div class="max-h-[380px] overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-950 p-2 sm:p-3 shadow-inner">
-                  <JsonViewer
-                    :data="activeHeroEndpoint.response"
-                    :statusCode="200"
-                    :latencyMs="statusStore.latencyMs"
-                    :showHeader="false"
-                  />
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
       </div>
     </section>
 
@@ -255,7 +171,7 @@
 
     <!-- Clean Core Features Grid -->
     <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[85%] max-w-[1440px] px-2 sm:px-4 space-y-8 sm:space-y-10">
-      <div class="space-y-2 text-left max-w-2xl">
+      <div class="space-y-2.5 text-center max-w-3xl mx-auto">
         <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">{{ langStore.t.home.featuresTitle }}</h2>
         <p class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900">
           {{ langStore.t.home.featuresSubtitle }}
@@ -264,34 +180,34 @@
 
       <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
         <!-- Feature 1 -->
-        <div class="rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-2xs hover:shadow-subtle hover:border-zinc-300 transition-all space-y-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900">
+        <div class="rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-2xs hover:shadow-subtle hover:border-zinc-300 transition-all space-y-3 text-center flex flex-col items-center">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900">
             <GlobeIcon class="w-5 h-5 text-zinc-800" />
           </div>
           <h3 class="text-sm font-bold text-zinc-900">{{ langStore.t.home.feature4Title }}</h3>
-          <p class="text-xs text-zinc-600 leading-relaxed">
+          <p class="text-xs text-zinc-600 leading-relaxed max-w-xs">
             {{ langStore.t.home.feature4Desc }}
           </p>
         </div>
 
         <!-- Feature 2 -->
-        <div class="rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-2xs hover:shadow-subtle hover:border-zinc-300 transition-all space-y-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900">
+        <div class="rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-2xs hover:shadow-subtle hover:border-zinc-300 transition-all space-y-3 text-center flex flex-col items-center">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900">
             <Building2Icon class="w-5 h-5 text-zinc-800" />
           </div>
           <h3 class="text-sm font-bold text-zinc-900">{{ langStore.t.home.feature1Title }}</h3>
-          <p class="text-xs text-zinc-600 leading-relaxed">
+          <p class="text-xs text-zinc-600 leading-relaxed max-w-xs">
             {{ langStore.t.home.feature1Desc }}
           </p>
         </div>
 
         <!-- Feature 3 -->
-        <div class="rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-2xs hover:shadow-subtle hover:border-zinc-300 transition-all space-y-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900">
+        <div class="rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-2xs hover:shadow-subtle hover:border-zinc-300 transition-all space-y-3 text-center flex flex-col items-center">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900">
             <ZapIcon class="w-5 h-5 text-amber-600" />
           </div>
           <h3 class="text-sm font-bold text-zinc-900">{{ langStore.t.home.feature3Title }}</h3>
-          <p class="text-xs text-zinc-600 leading-relaxed">
+          <p class="text-xs text-zinc-600 leading-relaxed max-w-xs">
             {{ langStore.t.home.feature3Desc }}
           </p>
         </div>
@@ -300,41 +216,140 @@
 
     <!-- Interactive Cambodia GeoJSON Map Section -->
     <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[85%] max-w-[1440px] px-2 sm:px-4 space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200/80 pb-4">
-        <div class="space-y-1">
-          <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Spatial Intelligence</h2>
-          <p class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">
-            {{ langStore.t.explorer.mapLayers }}
-          </p>
+      <div class="text-center space-y-2 max-w-2xl mx-auto border-b border-zinc-200/80 pb-4">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Spatial Intelligence</h2>
+        <p class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">
+          {{ langStore.t.explorer.mapLayers }}
+        </p>
+        <div>
+          <router-link
+            to="/explorer"
+            class="text-xs font-semibold text-zinc-700 hover:text-zinc-900 hover:underline inline-flex items-center gap-1.5"
+          >
+            <span>{{ langStore.t.home.exploreBtn }}</span>
+            <ArrowRightIcon class="w-3.5 h-3.5" />
+          </router-link>
         </div>
-        <router-link
-          to="/explorer"
-          class="text-xs font-semibold text-zinc-900 hover:underline inline-flex items-center gap-1"
-        >
-          <span>{{ langStore.t.home.exploreBtn }}</span>
-          <ArrowRightIcon class="w-3.5 h-3.5" />
-        </router-link>
       </div>
 
       <CambodiaMap />
     </section>
 
+    <!-- Interactive Developer Console — Under Map GeoJSON -->
+    <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[85%] max-w-[1440px] px-2 sm:px-4 space-y-6 text-left">
+      <div class="text-center space-y-2 max-w-2xl mx-auto border-b border-zinc-200/80 pb-4">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Developer API Client & Console</h2>
+        <p class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">
+          {{ langStore.currentLang === 'km' ? 'សាកល្បងហៅ API ផ្ទាល់ (Code & JSON)' : 'Interactive API Endpoints & Code Snippets' }}
+        </p>
+        <div>
+          <router-link
+            to="/docs"
+            class="text-xs font-semibold text-zinc-700 hover:text-zinc-900 hover:underline inline-flex items-center gap-1.5"
+          >
+            <span>{{ langStore.t.home.docsBtn }}</span>
+            <ArrowRightIcon class="w-3.5 h-3.5" />
+          </router-link>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-zinc-200/90 bg-white shadow-card overflow-hidden transition-all duration-300 hover:shadow-elevated hover:border-zinc-300">
+        <!-- Terminal Title Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-100 bg-zinc-50/90 px-3.5 sm:px-4 py-2.5 gap-2.5">
+          <div class="flex items-center gap-3 overflow-x-auto no-scrollbar py-0.5">
+            <div class="hidden sm:flex items-center gap-1.5 mr-1 shrink-0">
+              <div class="h-2.5 w-2.5 rounded-full bg-rose-400/80 hover:bg-rose-500 transition-colors cursor-pointer"></div>
+              <div class="h-2.5 w-2.5 rounded-full bg-amber-400/80 hover:bg-amber-500 transition-colors cursor-pointer"></div>
+              <div class="h-2.5 w-2.5 rounded-full bg-emerald-400/80 hover:bg-emerald-500 transition-colors cursor-pointer"></div>
+            </div>
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              <button
+                v-for="(ep, idx) in heroEndpoints"
+                :key="ep.id"
+                @click="activeEndpointIdx = idx"
+                :class="[
+                  'inline-flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer select-none whitespace-nowrap',
+                  activeEndpointIdx === idx
+                    ? 'bg-zinc-900 text-white shadow-2xs font-bold scale-[1.02]'
+                    : 'text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900'
+                ]"
+              >
+                <component :is="ep.icon" class="w-3.5 h-3.5 shrink-0" />
+                <span class="font-mono text-[11px]">{{ ep.title }}</span>
+                <span class="font-battambang text-[10px] opacity-80" v-if="langStore.currentLang === 'km'">{{ ep.kmTag }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between sm:justify-end gap-2 text-xs">
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/60">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>HTTP 200 • {{ statusStore.latencyMs }}ms</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Console Dual View -->
+        <div class="grid grid-cols-1 gap-0 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-100">
+          <div class="lg:col-span-5 p-3.5 sm:p-5 space-y-3 bg-zinc-50/40">
+            <div class="flex items-center justify-between text-xs text-zinc-500">
+              <span class="font-bold uppercase tracking-wider text-zinc-800 text-[11px] flex items-center gap-1.5">
+                <ZapIcon class="w-3.5 h-3.5 text-amber-500" />
+                <span>Client Code</span>
+              </span>
+              <span class="font-mono text-[11px] text-zinc-400">cURL, JS, Py, Dart, Go</span>
+            </div>
+            <CodeBlock
+              :endpoint="activeHeroEndpoint.endpoint"
+              :method="'GET'"
+              :queryParams="activeHeroEndpoint.queryParams"
+            />
+            <p class="text-[11.5px] text-zinc-500 leading-relaxed font-normal">
+              {{ activeHeroEndpoint.description }}
+            </p>
+          </div>
+          <div class="lg:col-span-7 p-3.5 sm:p-5 space-y-3">
+            <div class="flex items-center justify-between text-xs text-zinc-500">
+              <div class="flex items-center gap-2">
+                <span class="font-bold uppercase tracking-wider text-zinc-800 text-[11px] flex items-center gap-1.5">
+                  <FileCodeIcon class="w-3.5 h-3.5 text-zinc-500" />
+                  <span>Live JSON Output</span>
+                </span>
+              </div>
+              <span class="font-mono text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                Verified 2025 Standard
+              </span>
+            </div>
+            <div class="max-h-[380px] overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-950 p-2 sm:p-3 shadow-inner">
+              <JsonViewer
+                :data="activeHeroEndpoint.response"
+                :statusCode="200"
+                :latencyMs="statusStore.latencyMs"
+                :showHeader="false"
+              />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Embedded Interactive Quick Playground -->
     <section class="mx-auto w-[92%] sm:w-[88%] lg:w-[85%] max-w-[1440px] px-2 sm:px-4 space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200/80 pb-4">
-        <div class="space-y-1">
-          <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Live Playground</h2>
-          <p class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">
-            {{ langStore.t.apis.title }}
-          </p>
+      <div class="text-center space-y-2 max-w-2xl mx-auto border-b border-zinc-200/80 pb-4">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Live Playground</h2>
+        <p class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">
+          {{ langStore.t.apis.title }}
+        </p>
+        <div>
+          <router-link
+            to="/explorer"
+            class="text-xs font-semibold text-zinc-700 hover:text-zinc-900 hover:underline inline-flex items-center gap-1.5"
+          >
+            <span>{{ langStore.t.nav.openExplorer }}</span>
+            <ArrowRightIcon class="w-3.5 h-3.5" />
+          </router-link>
         </div>
-        <router-link
-          to="/explorer"
-          class="text-xs font-semibold text-zinc-900 hover:underline inline-flex items-center gap-1"
-        >
-          <span>{{ langStore.t.nav.openExplorer }}</span>
-          <ArrowRightIcon class="w-3.5 h-3.5" />
-        </router-link>
       </div>
 
       <ApiExplorer />
@@ -451,6 +466,8 @@ function startStatsAnimation() {
 }
 
 onMounted(() => {
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
   // GSAP Smooth Entrance Timeline for Hero
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
@@ -476,12 +493,6 @@ onMounted(() => {
     { opacity: 0, y: 20, scale: 0.92 },
     { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.6, ease: 'back.out(1.4)' },
     '-=0.6'
-  )
-  .fromTo(
-    '.gsap-hero-console',
-    { opacity: 0, y: 35 },
-    { opacity: 1, y: 0, duration: 0.8 },
-    '-=0.4'
   );
 
   // IntersectionObserver for Stats section on scroll
@@ -639,7 +650,7 @@ const activeHeroEndpoint = computed(() => heroEndpoints[activeEndpointIdx.value]
 
 async function copyQuickUrl() {
   try {
-    const fullCmd = `curl -X GET "https://api.khmerapi.dev/api/v1/${activeHeroEndpoint.value.path}" -H "Accept: application/json"`;
+    const fullCmd = `curl -X GET "https://khmerapi.lorndavid.online/api/v1/${activeHeroEndpoint.value.path}" -H "Accept: application/json"`;
     await navigator.clipboard.writeText(fullCmd);
     urlCopied.value = true;
     setTimeout(() => {
