@@ -187,7 +187,102 @@ curl -s https://khmerapi.lorndavid.online/v1/statistics
 
 ---
 
-## 📝 5. Conclusion
+## 🐳 5. Docker Hub Publishing & Teacher Docker Desktop Evaluation Guide
+
+All production containers are published to **Docker Hub** so the teacher can test and run the entire application on **Docker Desktop** (macOS, Windows, or Linux) with a single command, without installing dependencies or building locally.
+
+### 5.1 Published Docker Hub Images
+* **Backend Image:** `lorndavid/khmerapi-backend:latest`
+* **Frontend Image:** `lorndavid/khmerapi-frontend:latest`
+* **Database Image:** `postgres:16-alpine`
+
+### 5.2 How to Push to Docker Hub (Student)
+```bash
+# 1. Login to Docker Hub
+docker login
+
+# 2. Build and push automatically
+bash scripts/push-dockerhub.sh lorndavid
+# Or in PowerShell: .\scripts\push-dockerhub.ps1 -Username "lorndavid"
+```
+
+### 5.3 How the Teacher Runs on Docker Desktop (Step-by-Step)
+
+The teacher only needs **Docker Desktop** installed.
+
+1. **Download [`docker-compose.hub.yml`](docker-compose.hub.yml)**:
+   ```yaml
+   name: khmerapi
+
+   services:
+     database:
+       image: postgres:16-alpine
+       container_name: khmerapi-database
+       restart: unless-stopped
+       environment:
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: postgrespassword
+         POSTGRES_DB: khmerapi
+       ports:
+         - "5432:5432"
+       volumes:
+         - khmerapi_db_data:/var/lib/postgresql/data
+       healthcheck:
+         test: ["CMD-SHELL", "pg_isready -U postgres -d khmerapi"]
+         interval: 5s
+         timeout: 5s
+         retries: 5
+
+     backend:
+       image: lorndavid/khmerapi-backend:latest
+       container_name: khmerapi-backend
+       restart: unless-stopped
+       ports:
+         - "4000:4000"
+       environment:
+         NODE_ENV: production
+         PORT: 4000
+         HOST: 0.0.0.0
+         DATABASE_URL: postgresql://postgres:postgrespassword@database:5432/khmerapi?schema=public
+         REDIS_ENABLED: "false"
+         CORS_ORIGINS: "*"
+       depends_on:
+         database:
+           condition: service_healthy
+
+     frontend:
+       image: lorndavid/khmerapi-frontend:latest
+       container_name: khmerapi-frontend
+       restart: unless-stopped
+       ports:
+         - "80:80"
+       depends_on:
+         - backend
+
+   volumes:
+     khmerapi_db_data:
+   ```
+
+2. **Run in Terminal**:
+   ```bash
+   docker compose -f docker-compose.hub.yml up -d
+   ```
+
+3. **What Happens Automatically**:
+   * Docker Desktop pulls all 3 images from Docker Hub.
+   * PostgreSQL database initializes.
+   * Backend container executes `scripts/start-backend.sh`, auto-applies database schemas, and seeds Cambodia 2025 geographic data (25 provinces, 210 districts, 1,661 communes, 14,528 villages).
+   * Frontend Nginx starts up on port `80`.
+
+4. **Test in Browser**:
+   * **Frontend Web App:** [http://localhost](http://localhost)
+   * **Backend Healthcheck:** [http://localhost:4000/health](http://localhost:4000/health)
+   * **Administrative API:** [http://localhost:4000/v1/provinces](http://localhost:4000/v1/provinces) (or [http://localhost/v1/provinces](http://localhost/v1/provinces))
+   * **Interactive API Docs:** [http://localhost/docs](http://localhost/docs)
+
+---
+
+## 📝 6. Conclusion
 
 This project successfully fulfills all homework specifications:
 1. **Container 1 (DB):** PostgreSQL 16 container with persistent volumes.
@@ -195,3 +290,4 @@ This project successfully fulfills all homework specifications:
 3. **Container 3 (Frontend):** Vue 3 SPA compiled and served via Nginx.
 4. **Domain & VPS:** Live public web application running at `https://khmerapi.lorndavid.online`.
 5. **Nginx Proxy Manager:** Configured via Docker (`jc21/nginx-proxy-manager:latest`) exposing the web management interface on port 81 and handling reverse proxy routing with SSL.
+6. **Docker Hub & Docker Desktop Ready:** Prebuilt images pushed to Docker Hub with `docker-compose.hub.yml` enabling instant zero-config evaluation on Docker Desktop.

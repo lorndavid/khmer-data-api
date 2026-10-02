@@ -1,0 +1,61 @@
+name: khmerapi
+
+services:
+  # ========================================================
+  # 1. Database Container (PostgreSQL 16)
+  # ========================================================
+  database:
+    image: postgres:16-alpine
+    container_name: khmerapi-database
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: khmerapi
+    ports:
+      - "5432:5432"
+    volumes:
+      - khmerapi_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d khmerapi"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ========================================================
+  # 2. Backend REST API Gateway (Docker Hub Image)
+  # ========================================================
+  backend:
+    image: ${DOCKERHUB_USER:-lorndavid}/khmerapi-backend:latest
+    container_name: khmerapi-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      HOST: 0.0.0.0
+      DATABASE_URL: postgresql://postgres:postgrespassword@database:5432/khmerapi?schema=public
+      REDIS_ENABLED: "false"
+      JWT_SECRET: super_secret_jwt_key_khmerapi_platform_default
+      JWT_REFRESH_SECRET: super_secret_refresh_jwt_key_khmerapi_platform_default
+      CORS_ORIGINS: "*"
+      LOG_LEVEL: info
+    depends_on:
+      database:
+        condition: service_healthy
+
+  # ========================================================
+  # 3. Frontend Web Application (Docker Hub Image)
+  # ========================================================
+  frontend:
+    image: ${DOCKERHUB_USER:-lorndavid}/khmerapi-frontend:latest
+    container_name: khmerapi-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  khmerapi_db_data:

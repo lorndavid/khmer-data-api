@@ -60,26 +60,64 @@ docker compose up -d --build
 
 ---
 
-## 🐳 Step 3: Tag & Push to Docker Hub (For Your Team)
+## 🐳 Step 3: Push to Docker Hub
 
-Replace `<your-dockerhub-username>` with your actual Docker Hub username:
+You can push using the automated script or manual commands:
 
+### Option A: Using the Automated Script
+In Linux/macOS/Git Bash:
 ```bash
 # 1. Login to Docker Hub
 docker login
 
-# 2. Tag Frontend & Backend images
-docker tag khmerapi-frontend:latest <your-dockerhub-username>/khmerapi-frontend:latest
-docker tag khmerapi-backend:latest <your-dockerhub-username>/khmerapi-backend:latest
-
-# 3. Push to Docker Hub
-docker push <your-dockerhub-username>/khmerapi-frontend:latest
-docker push <your-dockerhub-username>/khmerapi-backend:latest
+# 2. Build and push both images automatically
+bash scripts/push-dockerhub.sh <your-dockerhub-username>
 ```
 
-### 👥 How Your Teammates Run the 3 Containers:
-Your teammates simply clone the project or download `docker-compose.yml` and run:
+In Windows PowerShell:
+```powershell
+docker login
+.\scripts\push-dockerhub.ps1 -Username "<your-dockerhub-username>"
+```
+
+### Option B: Manual Tag & Push
 ```bash
-docker compose up -d
+docker login
+
+# Build & Tag images
+docker build -t <your-dockerhub-username>/khmerapi-backend:latest -f Dockerfile.backend .
+docker build -t <your-dockerhub-username>/khmerapi-frontend:latest -f frontend/Dockerfile frontend
+
+# Push to Docker Hub
+docker push <your-dockerhub-username>/khmerapi-backend:latest
+docker push <your-dockerhub-username>/khmerapi-frontend:latest
 ```
-All 3 containers will start automatically with fully migrated schemas and preloaded Cambodian 2025 data!
+
+---
+
+## 👨‍🏫 Step 4: How Your Teacher Runs Your Project on Docker Desktop
+
+Your teacher does **NOT** need to install Node.js, clone the full repo, or build anything. They only need Docker Desktop and the single `docker-compose.hub.yml` file!
+
+### Instructions for Teacher:
+1. Download or copy [`docker-compose.hub.yml`](docker-compose.hub.yml).
+2. Open a terminal in the folder containing `docker-compose.hub.yml` and run:
+   ```bash
+   docker compose -f docker-compose.hub.yml up -d
+   ```
+3. Docker Desktop will automatically pull:
+   * `postgres:16-alpine`
+   * `<your-dockerhub-username>/khmerapi-backend:latest`
+   * `<your-dockerhub-username>/khmerapi-frontend:latest`
+4. The database automatically initializes and imports all 25 provinces, 210 districts, 1,661 communes, and 14,528 villages!
+5. Open browser on Docker Desktop:
+   * **Web App UI**: [http://localhost](http://localhost)
+   * **REST API**: [http://localhost:4000/v1/provinces](http://localhost:4000/v1/provinces) (or [http://localhost/v1/provinces](http://localhost/v1/provinces))
+   * **Health Check**: [http://localhost:4000/health](http://localhost:4000/health)
+   * **API Docs**: [http://localhost/docs](http://localhost/docs)
+
+To stop the containers:
+```bash
+docker compose -f docker-compose.hub.yml down
+```
+
