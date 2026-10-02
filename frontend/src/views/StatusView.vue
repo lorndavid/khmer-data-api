@@ -61,7 +61,7 @@
       <div class="col-span-2 sm:col-span-4 lg:col-span-1 rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 shadow-2xs space-y-1">
         <div class="text-xs font-medium text-emerald-800">{{ langStore.currentLang === 'km' ? 'ល្បឿនមធ្យម Gateway' : 'Average Gateway Latency' }}</div>
         <div class="text-2xl font-extrabold font-mono text-emerald-700">{{ avgLatency }}ms</div>
-        <div class="text-[11px] text-emerald-600 font-medium">{{ langStore.currentLang === 'km' ? 'Redis In-Memory Hit' : 'Redis In-Memory Hit' }}</div>
+        <div class="text-[11px] text-emerald-600 font-medium">{{ langStore.currentLang === 'km' ? 'ល្បឿនលឿនជាក់ស្តែង' : 'High Performance Latency' }}</div>
       </div>
     </div>
 
@@ -147,9 +147,9 @@
             <span class="text-[10px] font-mono font-bold uppercase text-zinc-500">Layer 2</span>
             <ZapIcon class="w-4 h-4 text-amber-600" />
           </div>
-          <h3 class="text-xs font-bold text-zinc-900">{{ langStore.currentLang === 'km' ? 'អង្គចងចាំ Redis Cache' : 'Redis In-Memory Cache' }}</h3>
+          <h3 class="text-xs font-bold text-zinc-900">{{ langStore.currentLang === 'km' ? 'អង្គចងចាំទិន្នន័យ Buffer' : 'In-Memory Query Buffer' }}</h3>
           <p class="text-[11px] text-zinc-600 leading-relaxed">
-            {{ langStore.currentLang === 'km' ? 'រក្សាទុកទិន្នន័យញឹកញាប់ក្នុង RAM (ខេត្ត ស្រុក ឃុំ ភូមិ និង Index ស្វែងរក) ផ្តល់ល្បឿនឆ្លើយតប < 1ms។' : 'Sub-millisecond key-value caching of high-frequency datasets (provinces, districts, search indices) and rate limiting.' }}
+            {{ langStore.currentLang === 'km' ? 'ផ្ទុកទិន្នន័យញឹកញាប់ក្នុង Memory Buffer ជាមួយ Node.js រួមមានខេត្ត ស្រុក ឃុំ ភូមិ និង Index ស្វែងរក ផ្តល់ល្បឿនឆ្លើយតប < 1ms។' : 'Sub-millisecond in-memory buffering of high-frequency datasets (provinces, districts, search indices) and sliding rate limiting.' }}
           </p>
         </div>
 
@@ -222,13 +222,13 @@
           </div>
         </div>
 
-        <!-- Service 3: Redis Cache -->
+        <!-- Service 3: Edge & Gateway -->
         <div class="flex items-center justify-between p-4 text-xs sm:text-sm">
           <div class="flex items-center gap-3">
-            <ZapIcon class="w-4 h-4 text-zinc-500" />
+            <GlobeIcon class="w-4 h-4 text-zinc-500" />
             <div>
-              <span class="font-bold text-zinc-900">{{ langStore.t.status.redisCache }}</span>
-              <span class="ml-2 font-mono text-[11px] text-zinc-400">{{ langStore.currentLang === 'km' ? 'In-Memory Cache' : 'Memory Caching' }}</span>
+              <span class="font-bold text-zinc-900">{{ langStore.t.status.edgeGateway }}</span>
+              <span class="ml-2 font-mono text-[11px] text-zinc-400">{{ langStore.currentLang === 'km' ? 'Edge Tunnel & Gateway' : 'Cloudflare Tunnel & Edge' }}</span>
             </div>
           </div>
           <div class="flex items-center gap-4">

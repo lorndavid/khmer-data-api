@@ -50,7 +50,7 @@ export interface SystemHealth {
   service: string;
   version: string;
   database: 'connected' | 'disconnected';
-  redis: 'connected' | 'disconnected' | 'disabled';
+  redis?: 'connected' | 'disconnected' | 'disabled';
   timestamp: string;
   uptime_seconds?: number;
 }

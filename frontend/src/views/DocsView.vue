@@ -548,7 +548,7 @@
               Health Check API
             </h2>
             <p class="text-sm text-zinc-600 leading-relaxed">
-              Liveness probe endpoint reporting database connectivity, Redis cache latency, memory allocation, and gateway uptime.
+              Liveness probe endpoint reporting database connectivity, memory allocation, and gateway uptime.
             </p>
           </div>
 
@@ -557,7 +557,7 @@
             title="Gateway Health Check"
             endpoint="/health"
             method="GET"
-            description="Returns status of PostgreSQL, Redis cache, system uptime, and memory consumption."
+            description="Returns status of PostgreSQL database, system uptime, and memory consumption."
             :exampleResponse="SAMPLE_HEALTH_RESPONSE"
           />
         </section>
@@ -1026,7 +1026,6 @@ const SAMPLE_STATS_RESPONSE = {
 const SAMPLE_HEALTH_RESPONSE = {
   status: "ok",
   database: "connected",
-  redis: "connected",
   uptime_seconds: 4820,
   memory_mb: {
     rss: 48.2,

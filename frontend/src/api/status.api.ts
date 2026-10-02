@@ -28,7 +28,6 @@ export const statusApi = {
           service: 'khmerapi-backend',
           version: '1.0.0',
           database: 'connected',
-          redis: 'connected',
           timestamp: new Date().toISOString(),
         },
         timestamp: new Date().toISOString(),

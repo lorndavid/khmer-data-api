@@ -166,7 +166,7 @@ const navGroups = computed<NavGroup[]>(() => {
         { id: 'search', label: 'Universal Search', method: 'GET', kmLabel: 'ស្វែងរកទូទៅ', keywords: ['search', 'query', 'khmer search'] },
         { id: 'demographics', label: 'Population & Demographics', method: 'GET', kmLabel: 'ស្ថិតិប្រជាសាស្ត្រ', keywords: ['population', 'census', 'demographics', '17.3M', '1962'] },
         { id: 'statistics', label: 'Statistics', method: 'GET', kmLabel: 'ស្ថិតិទូទៅ', keywords: ['statistics', 'counts', 'summary'] },
-        { id: 'health', label: 'Health & Status', method: 'GET', kmLabel: 'សុខភាពប្រព័ន្ធ', keywords: ['health', 'ping', 'redis', 'db'] },
+        { id: 'health', label: 'Health & Status', method: 'GET', kmLabel: 'សុខភាពប្រព័ន្ធ', keywords: ['health', 'ping', 'uptime', 'db'] },
       ],
     },
   ];

@@ -27,7 +27,7 @@ const STATIC_DOC_ITEMS: DocSearchItem[] = [
   { id: 'doc-stats', title: 'Statistics API', category: 'API Endpoint', path: '/docs/statistics', description: 'Live database counts for all entities', method: 'GET' },
   { id: 'nav-apis', title: 'API Catalog', category: 'Developer', path: '/apis', description: 'Browse all available public Cambodia APIs' },
   { id: 'nav-explorer', title: 'Interactive API Explorer', category: 'Developer', path: '/explorer', description: 'Test endpoints in real-time with custom parameters' },
-  { id: 'nav-status', title: 'System Status & Uptime', category: 'Developer', path: '/status', description: 'Real-time API, Database, and Redis health' },
+  { id: 'nav-status', title: 'System Status & Uptime', category: 'Developer', path: '/status', description: 'Real-time API, Database, and System health' },
   { id: 'nav-keys', title: 'Developer API Keys', category: 'Developer', path: '/dashboard/keys', description: 'Manage developer API keys and usage' },
 ];
 
