@@ -26,9 +26,10 @@ pino-*.log
 prisma/*.db
 prisma/*.db-journal
 
-# OS files
+# OS & Office temp files
 .DS_Store
 Thumbs.db
+~$*.docx
 
 # IDEs
 .idea/
