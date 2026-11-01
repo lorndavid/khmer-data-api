@@ -294,29 +294,30 @@ def create_slides(output_path):
     add_screenshot_placeholder(slide6, Inches(0.8), Inches(2.1), Inches(11.7), Inches(4.7), "Screenshot: Terminal output of 'docker ps' showing all 3 containers UP")
 
     # ========================================================
-    # SLIDE 7: REQUIREMENT 2 - VPS & DOMAIN
+    # SLIDE 7: REQUIREMENT 2 - SELF-HOSTED SERVER & DOMAIN
     # ========================================================
     slide7 = prs.slides.add_slide(blank_layout)
     apply_bg(slide7)
-    add_header(slide7, "Requirement 2: Free Domain & Cloud VPS Setup", "Cloud Hosting")
+    add_header(slide7, "Requirement 2: Self-Hosted Server & Free Domain Setup", "Home Server Lab")
 
     tx = slide7.shapes.add_textbox(Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.2))
     tf = tx.text_frame
     tf.word_wrap = True
     
     p = tf.paragraphs[0]
-    p.text = "Cloud Infrastructure Specifications:"
+    p.text = "Self-Hosted Infrastructure Specifications:"
     p.font.bold = True
     p.font.size = Pt(14)
     p.font.color.rgb = PRIMARY
 
     vps_points = [
-        "Cloud VPS: Ubuntu 24.04 LTS (Dedicated IP: 147.93.111.196)",
-        "Domain: lorndavid.online",
+        "Server Hardware: Dedicated Ubuntu 24.04 LTS Machine",
+        "Remote Control: Tailscale Mesh VPN for secure SSH",
+        "Free Domain: lorndavid.online",
         "Subdomain (API): khmerapi.lorndavid.online",
         "Subdomain (UI): khmer.lorndavid.online",
-        "DNS Config: A-Record pointing domain to VPS IP address",
-        "Security: Automatic SSL Certificate & HTTPS redirection"
+        "Cloudflare Tunnel: Secure zero-trust public HTTPS routing",
+        "Zero Port Forwarding: Secure and encrypted traffic"
     ]
     for pt in vps_points:
         pb = tf.add_paragraph()
@@ -324,7 +325,7 @@ def create_slides(output_path):
         pb.font.size = Pt(11.5)
         pb.font.color.rgb = TEXT_BLACK
 
-    add_screenshot_placeholder(slide7, Inches(6.8), Inches(1.5), Inches(5.7), Inches(5.2), "Screenshot: VPS Dashboard / DNS A-Record Configuration")
+    add_screenshot_placeholder(slide7, Inches(6.8), Inches(1.5), Inches(5.7), Inches(5.2), "Screenshot: Tailscale / Server Terminal & Cloudflare Tunnel")
 
     # ========================================================
     # SLIDE 8: NGINX PROXY MANAGER
@@ -339,17 +340,17 @@ def create_slides(output_path):
     p = tf.paragraphs[0]
     p.text = "Container: jc21/nginx-proxy-manager:latest\n" \
              "• Web GUI for managing reverse proxy hosts and SSL certificates.\n" \
-             "• Admin Dashboard runs on port 81 (http://147.93.111.196:81)."
+             "• Admin Dashboard runs on port 81 (http://<server-ip>:81)."
     p.font.size = Pt(12)
     p.font.color.rgb = TEXT_BLACK
 
-    cmd_npm = "# Run Nginx Proxy Manager on VPS\n" \
+    cmd_npm = "# Run Nginx Proxy Manager on Server\n" \
               "docker run -d \\\n" \
               "  --name nginx-proxy-manager \\\n" \
               "  --restart always \\\n" \
-              "  -p 80:80 \\\n" \
+              "  -p 8081:80 \\\n" \
               "  -p 81:81 \\\n" \
-              "  -p 443:443 \\\n" \
+              "  -p 8443:443 \\\n" \
               "  -v npm_data:/data \\\n" \
               "  -v npm_letsencrypt:/etc/letsencrypt \\\n" \
               "  jc21/nginx-proxy-manager:latest"

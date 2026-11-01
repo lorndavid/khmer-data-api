@@ -298,42 +298,42 @@ docker ps""")
     add_screenshot_placeholder(doc, "Screenshot 5: Terminal Output of 'docker ps' showing all 3 containers UP")
 
     # ========================================================
-    # 3. REQUIREMENT 2: VPS, DOMAIN & NGINX PROXY MANAGER
+    # 3. REQUIREMENT 2: SELF-HOSTED SERVER, DOMAIN & NGINX PROXY MANAGER
     # ========================================================
     p = doc.add_paragraph()
-    r = p.add_run("3. Requirement 2: Free Domain, Cloud VPS & Nginx Proxy Manager")
+    r = p.add_run("3. Requirement 2: Self-Hosted Server, Free Domain & Nginx Proxy Manager")
     format_run(r, bold=True, size_pt=13, color=COLOR_TITLE)
     p.paragraph_format.space_before = Pt(8)
     p.paragraph_format.space_after = Pt(2)
 
     p = doc.add_paragraph()
-    r = p.add_run("• Cloud VPS: ")
+    r = p.add_run("• Self-Hosted Server: ")
     format_run(r, bold=True)
-    r = p.add_run("Ubuntu 24.04 LTS (Dedicated IP: 147.93.111.196)\n")
+    r = p.add_run("Dedicated machine running Ubuntu 24.04 LTS with Docker Engine.\n")
     format_run(r)
-    r = p.add_run("• Domain: ")
+    r = p.add_run("• Remote Management: ")
     format_run(r, bold=True)
-    r = p.add_run("lorndavid.online (Subdomains: khmer.lorndavid.online, khmerapi.lorndavid.online)\n")
+    r = p.add_run("Tailscale Mesh VPN for secure remote SSH administration from anywhere.\n")
     format_run(r)
-    r = p.add_run("• DNS Configuration: ")
+    r = p.add_run("• Domain & Public Access: ")
     format_run(r, bold=True)
-    r = p.add_run("A-Record pointing domain to VPS IP address with automatic SSL.")
+    r = p.add_run("Domain lorndavid.online securely exposed via Cloudflare Tunnel with automated HTTPS SSL.\n")
     format_run(r)
 
-    add_screenshot_placeholder(doc, "Screenshot 6: Cloudflare DNS A-Record & VPS Dashboard")
+    add_screenshot_placeholder(doc, "Screenshot 6: Tailscale / Server Terminal & Cloudflare Tunnel Dashboard")
 
     p = doc.add_paragraph()
     r = p.add_run("• Running Nginx Proxy Manager on Docker:")
     format_run(r, bold=True, color=COLOR_PRIMARY)
     p.paragraph_format.space_before = Pt(4)
 
-    add_code_box(doc, """# Run Nginx Proxy Manager Container on VPS
+    add_code_box(doc, """# Run Nginx Proxy Manager on Self-Hosted Server
 docker run -d \\
   --name nginx-proxy-manager \\
   --restart always \\
-  -p 80:80 \\
+  -p 8081:80 \\
   -p 81:81 \\
-  -p 443:443 \\
+  -p 8443:443 \\
   -v npm_data:/data \\
   -v npm_letsencrypt:/etc/letsencrypt \\
   jc21/nginx-proxy-manager:latest""")
