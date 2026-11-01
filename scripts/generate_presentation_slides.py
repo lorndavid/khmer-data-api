@@ -182,7 +182,11 @@ def create_slides(output_path):
         pb.font.size = Pt(12)
         pb.font.color.rgb = TEXT_BLACK
 
-    add_screenshot_placeholder(slide2, Inches(6.8), Inches(1.5), Inches(5.7), Inches(5.2), "Screenshot: Project Architecture / Dockerfiles")
+    arch_img = os.path.join(os.path.dirname(output_path), "architecture-overview.jpg")
+    if os.path.exists(arch_img):
+        slide2.shapes.add_picture(arch_img, Inches(6.8), Inches(1.5), width=Inches(5.7))
+    else:
+        add_screenshot_placeholder(slide2, Inches(6.8), Inches(1.5), Inches(5.7), Inches(5.2), "Screenshot: Project Architecture / Dockerfiles")
 
     # ========================================================
     # SLIDE 3: 1.1 DATABASE CONTAINER

@@ -177,7 +177,20 @@ def create_document(output_path):
     r4 = p.add_run("Deploy to Cloud VPS with a custom domain, host the web application live, and run Nginx Proxy Manager on Docker.")
     format_run(r4)
 
-    add_screenshot_placeholder(doc, "Screenshot 1: Project Architecture / Dockerfiles in VS Code")
+    img_path = os.path.join(os.path.dirname(output_path), "architecture-overview.jpg")
+    if os.path.exists(img_path):
+        p_img = doc.add_paragraph()
+        p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_img.paragraph_format.space_before = Pt(6)
+        p_img.paragraph_format.space_after = Pt(2)
+        doc.add_picture(img_path, width=Inches(6.6))
+        p_cap = doc.add_paragraph()
+        p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r_cap = p_cap.add_run("Figure 1.1: System Architecture Diagram (Docker 3-Tier Containers & Cloud VPS Hosting)")
+        format_run(r_cap, size_pt=9, italic=True, color=COLOR_MUTED)
+        doc.add_paragraph().paragraph_format.space_after = Pt(4)
+    else:
+        add_screenshot_placeholder(doc, "Screenshot 1: Project Architecture / Dockerfiles in VS Code")
 
     # ========================================================
     # 2. REQUIREMENT 1: 3 DOCKER CONTAINERS
@@ -378,9 +391,15 @@ docker run -d \\
     r_ty = p_ty.add_run("THANK YOU")
     format_run(r_ty, font_name="Calibri", size_pt=26, bold=True, color=COLOR_GREEN)
 
-    doc.save(output_path)
-    print(f"Document saved successfully to: {output_path}")
+    try:
+        doc.save(output_path)
+        print(f"Document saved successfully to: {output_path}")
+    except PermissionError:
+        alt_path = output_path.replace(".docx", "-Final.docx")
+        doc.save(alt_path)
+        print(f"File was open in Word. Saved to alternative path: {alt_path}")
 
 if __name__ == "__main__":
     out = r"d:\Developer Project\homework\Homework-Docker-Report.docx"
     create_document(out)
+
